@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: theme.zIndex.drawer + 1,
     },
     drawer: {
-      [theme.breakpoints.up("sm")]: {
+      [theme.breakpoints.up("md")]: {
         width: drawerWidth,
         flexShrink: 0,
       },
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     menuButton: {
       marginRight: theme.spacing(2),
-      [theme.breakpoints.up("sm")]: {
+      [theme.breakpoints.up("md")]: {
         display: "none",
       },
     },
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const NavBar: React.FC<{}> = () => {
+const NavBar: React.FC<{}> = (): React.ReactElement => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
@@ -108,7 +108,7 @@ const NavBar: React.FC<{}> = () => {
       </AppBar>
       <nav className={classes.drawer}>
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
+        <Hidden mdUp implementation="css">
           <Drawer
             variant="temporary"
             anchor={theme.direction === "rtl" ? "right" : "left"}
@@ -130,7 +130,7 @@ const NavBar: React.FC<{}> = () => {
             <div className={classes.drawerContainer}>{drawer}</div>;
           </Drawer>
         </Hidden>
-        <Hidden xsDown implementation="css">
+        <Hidden smDown implementation="css">
           <Drawer
             className={classes.drawer}
             variant="permanent"

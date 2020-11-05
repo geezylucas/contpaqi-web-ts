@@ -3,7 +3,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-
 import NavBar from "./router/NavBar";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -18,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const App: React.FC<{}> = () => {
+const App: React.FC<{}> = (): React.ReactElement => {
   const classes = useStyles();
 
   return (
