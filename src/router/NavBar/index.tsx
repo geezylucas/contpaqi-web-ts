@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import {
   createStyles,
   Theme,
@@ -10,16 +11,14 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 import Hidden from "@material-ui/core/Hidden";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
+import { Routes, RouteType } from "../routes";
 
 const drawerWidth = 240;
 
@@ -53,37 +52,39 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const NavBar: React.FC<{}> = (): React.ReactElement => {
+const NavBar: React.FC<RouteComponentProps> = (
+  props: RouteComponentProps
+): React.ReactElement => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
+  const { location } = props;
 
-  const handleDrawerToggle = (): void => {
-    setMobileOpen(!mobileOpen);
+  const activeRoute = (routeName: string): boolean => {
+    return location.pathname === routeName ? true : false;
   };
+
+  const handleDrawerToggle = (): void => setMobileOpen(!mobileOpen);
 
   const drawer = (
     <React.Fragment>
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        {Routes.map(
+          (o: RouteType): JSX.Element => (
+            <ListItem
+              button
+              key={o.path}
+              component={Link}
+              to={o.path}
+              selected={activeRoute(o.path)}
+            >
+              <ListItemIcon>
+                <o.icon />
+              </ListItemIcon>
+              <ListItemText primary={o.sidebarName} />
+            </ListItem>
+          )
+        )}
       </List>
     </React.Fragment>
   );
@@ -102,7 +103,7 @@ const NavBar: React.FC<{}> = (): React.ReactElement => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Responsive drawer
+            PROSIS
           </Typography>
         </Toolbar>
       </AppBar>
@@ -147,4 +148,4 @@ const NavBar: React.FC<{}> = (): React.ReactElement => {
   );
 };
 
-export default NavBar;
+export default withRouter(NavBar);
