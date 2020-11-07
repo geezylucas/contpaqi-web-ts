@@ -16,5 +16,5 @@ export default configureStore({
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
   }),
-  devTools: true,
+  devTools: process.env.NODE_ENV !== "development" ? false : true,
 });

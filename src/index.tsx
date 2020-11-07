@@ -1,17 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { Persistor, persistStore } from "redux-persist";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import "./index.css";
+import store from "./store";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+const persistor: Persistor = persistStore(store);
+
 ReactDOM.render(
   <React.StrictMode>
-    <CssBaseline />
-    <Router>
-      <App />
-    </Router>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <CssBaseline />
+        <Router>
+          <App />
+        </Router>
+      </PersistGate>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

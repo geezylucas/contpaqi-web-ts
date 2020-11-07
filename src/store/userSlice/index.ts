@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface UserState {
+export interface IUserState {
   token?: string;
 }
 
-export const initialState: UserState = {
+export const initialState: IUserState = {
   token: undefined,
 };
 

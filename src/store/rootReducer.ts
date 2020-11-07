@@ -3,38 +3,40 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, WebStorage } from "redux-persist";
 import { createAction } from "@reduxjs/toolkit";
 
-import documentReducer, { DocumentState } from "./documentSlice";
-import userReducer, { UserState } from "./userSlice";
+import documentReducer, { IDocumentState } from "./documentSlice";
+import userReducer, { IUserState } from "./userSlice";
 
 // The top-level state object
-export interface ApplicationState {
-  document: DocumentState;
-  user: UserState;
+export interface IApplicationState {
+  document: IDocumentState;
+  user: IUserState;
 }
 
-const combinedReducers: Reducer<ApplicationState, AnyAction> = combineReducers<
-  ApplicationState,
-  AnyAction
+const combinedReducers: Reducer<IApplicationState> = combineReducers<
+  IApplicationState
 >({
   document: documentReducer,
   user: userReducer,
 });
 
+
+// LOGOUT Action
 const LOGOUT: string = "user/logout";
 
 export const logout = createAction<undefined>(LOGOUT);
 
-const rootReducer: Reducer<ApplicationState, AnyAction> = (
-  state: ApplicationState | undefined,
+// LOGOUT Reducer
+const rootReducer: Reducer<IApplicationState> = (
+  state: IApplicationState | undefined,
   action: AnyAction
-): ApplicationState => {
+): IApplicationState => {
   if (action.type === "user/logout") {
-    // check for action type
     state = undefined;
   }
   return combinedReducers(state, action);
 };
 
+// Config persist
 type PersistConfigType = {
   key: string;
   version: number;
@@ -47,7 +49,4 @@ const persistConfig: PersistConfigType = {
   storage,
 };
 
-export default persistReducer<ApplicationState, AnyAction>(
-  persistConfig,
-  rootReducer
-);
+export default persistReducer<IApplicationState>(persistConfig, rootReducer);
