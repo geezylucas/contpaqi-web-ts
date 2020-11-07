@@ -59,7 +59,7 @@ const documentSlice = createSlice({
     builder.addCase(
       fetchFillView.fulfilled,
       (state, action: PayloadAction<ExtraAPIType>) => {
-        state.extraAPI = action.payload!;
+        state.extraAPI = action.payload;
       }
     );
   },

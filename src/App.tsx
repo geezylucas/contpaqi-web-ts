@@ -2,8 +2,10 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
+import Box from "@material-ui/core/Box";
 import NavBar from "./router/NavBar";
 import { Routes, RouteType } from "./router/routes";
+import { Copyright } from "./components";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,6 +37,9 @@ const App: React.FC<{}> = (): React.ReactElement => {
             )
           )}
         </Switch>
+        <Box mt={4}>
+          <Copyright />
+        </Box>
       </main>
     </div>
   );
