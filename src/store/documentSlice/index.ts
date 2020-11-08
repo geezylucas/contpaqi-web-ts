@@ -11,7 +11,7 @@ export interface IDocumentState {
 
 export const fetchFillView = createAsyncThunk<ExtraAPIType>(
   "document/fetchPropsDoc",
-  async (_args, thunkAPI) => {
+  async (args, thunkAPI) => {
     try {
       const response: AxiosResponse<ExtraAPIType> = await axios.get<
         ExtraAPIType
@@ -35,7 +35,16 @@ export const initialState: IDocumentState = {
   },
   movements: [],
   extra: {
-    currencies: [],
+    currencies: [
+      {
+        value: 1,
+        label: "Peso Mexicano",
+      },
+      {
+        value: 2,
+        label: "Dólar Americano",
+      },
+    ],
   },
   extraAPI: {
     productosYServicios: [],

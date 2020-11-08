@@ -45,7 +45,7 @@ export default function Review() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Order summary
+        Revise todos los datos antes de crear la factura
       </Typography>
       <List disablePadding>
         {products.map((product) => (
