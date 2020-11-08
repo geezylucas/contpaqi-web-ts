@@ -48,7 +48,7 @@ const documentSlice = createSlice({
   name: "document",
   initialState,
   reducers: {
-    addCabecera: (state, action: PayloadAction<HeadType>) => {
+    addHead: (state, action: PayloadAction<HeadType>) => {
       state.head = action.payload;
     },
     addMovements: (state, action: PayloadAction<MovementType[]>) => {
@@ -65,6 +65,6 @@ const documentSlice = createSlice({
   },
 });
 
-export const { addCabecera, addMovements } = documentSlice.actions;
+export const { addHead, addMovements } = documentSlice.actions;
 
 export default documentSlice.reducer;

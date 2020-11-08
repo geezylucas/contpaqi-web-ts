@@ -2,7 +2,6 @@ import { AnyAction, combineReducers, Reducer } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, WebStorage } from "redux-persist";
 import { createAction } from "@reduxjs/toolkit";
-
 import documentReducer, { IDocumentState } from "./documentSlice";
 import userReducer, { IUserState } from "./userSlice";
 
@@ -18,7 +17,6 @@ const combinedReducers: Reducer<IApplicationState> = combineReducers<
   document: documentReducer,
   user: userReducer,
 });
-
 
 // LOGOUT Action
 const LOGOUT: string = "user/logout";

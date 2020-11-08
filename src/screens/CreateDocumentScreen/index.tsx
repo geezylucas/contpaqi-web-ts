@@ -95,7 +95,7 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
               <div className={classes.buttons}>
                 {activeStep !== 0 && (
                   <Button onClick={handleBack} className={classes.button}>
-                    Atras
+                    Atrás
                   </Button>
                 )}
                 <Button
@@ -105,7 +105,7 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
                   className={classes.button}
                 >
                   {activeStep === steps.length - 1
-                    ? "Place order"
+                    ? "Crear factura"
                     : "Siguiente"}
                 </Button>
               </div>
