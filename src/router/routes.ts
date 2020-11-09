@@ -1,7 +1,8 @@
+import React from "react";
 import HomeIcon from "@material-ui/icons/Home";
 import CreateIcon from "@material-ui/icons/Create";
-import { HomeScreen, CreateDocumentScreen } from "../screens";
-import React from "react";
+import ListIcon from "@material-ui/icons/List";
+import { HomeScreen, CreateDocumentScreen, Documents } from "../screens";
 
 export type RouteType = {
   path: string;
@@ -24,6 +25,13 @@ export const Routes: RouteType[] = [
     sidebarName: "Crear Factura",
     component: CreateDocumentScreen,
     icon: CreateIcon,
+    exact: false,
+  },
+  {
+    path: "/documents",
+    sidebarName: "Listado de facturas",
+    component: Documents,
+    icon: ListIcon,
     exact: false,
   },
 ];

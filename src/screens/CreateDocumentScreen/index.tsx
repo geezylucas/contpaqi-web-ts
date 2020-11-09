@@ -7,6 +7,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Hidden from "@material-ui/core/Hidden";
 import HeadForm from "./HeadForm";
 import MovementsTable from "./MovementsTable";
 import Review from "./Review";
@@ -70,13 +71,28 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
         <Typography component="h1" variant="h4" align="center">
           Crear factura
         </Typography>
-        <Stepper activeStep={activeStep} className={classes.stepper}>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+        <Hidden smUp implementation="css">
+          <Stepper
+            activeStep={activeStep}
+            className={classes.stepper}
+            orientation="vertical"
+          >
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <Stepper activeStep={activeStep} className={classes.stepper}>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Hidden>
         <React.Fragment>
           {activeStep === steps.length ? (
             <React.Fragment>
