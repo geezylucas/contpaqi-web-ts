@@ -11,6 +11,7 @@ import Hidden from "@material-ui/core/Hidden";
 import HeadForm from "./HeadForm";
 import MovementsTable from "./MovementsTable";
 import Review from "./Review";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
@@ -40,6 +41,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
   },
+  cont: {
+    width: '100%'
+  }
 }));
 
 const steps: string[] = ["Encabezado", "Movimientos", "Revisar"];
@@ -66,7 +70,7 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
   const handleBack = (): void => setActiveStep(activeStep - 1);
 
   return (
-    <Container className={classes.layout}>
+    <Grid item spacing={3}>
       <Paper className={classes.paper}>
         <Typography component="h1" variant="h4" align="center">
           Crear factura
@@ -106,30 +110,35 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
               </Typography>
             </React.Fragment>
           ) : (
-            <React.Fragment>
-              {getStepContent(activeStep)}
-              <div className={classes.buttons}>
-                {activeStep !== 0 && (
-                  <Button onClick={handleBack} className={classes.button}>
-                    Atrás
+              <React.Fragment>
+                <div className={classes.cont}>
+                  {getStepContent(activeStep)}
+                </div>
+
+                <div className={classes.buttons}>
+                  {activeStep !== 0 && (
+                    <Button onClick={handleBack} className={classes.button}>
+                      Atrás
+                    </Button>
+                  )}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                  >
+                    {activeStep === steps.length - 1
+                      ? "Crear factura"
+                      : "Siguiente"}
                   </Button>
-                )}
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNext}
-                  className={classes.button}
-                >
-                  {activeStep === steps.length - 1
-                    ? "Crear factura"
-                    : "Siguiente"}
-                </Button>
-              </div>
-            </React.Fragment>
-          )}
+                </div>
+              </React.Fragment>
+            )}
         </React.Fragment>
       </Paper>
-    </Container>
+    </Grid>
+
+
   );
 };
 
