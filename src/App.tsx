@@ -13,8 +13,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing(0),
-      width:'100%'
+      padding: theme.spacing(3),
+      width: "100%",
     },
   })
 );

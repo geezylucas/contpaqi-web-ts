@@ -183,7 +183,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
       marginBottom: theme.spacing(2),
     },
-   
   })
 );
 
@@ -244,8 +243,7 @@ const MovementsTable: React.FC<{}> = (): React.ReactElement => {
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
-    
-      <Paper className={classes.paper}>
+    <Paper className={classes.paper}>
       <EnhancedTableToolbar numSelected={selected.length} />
       <TableContainer>
         <Table aria-labelledby="tableTitle" aria-label="enhanced table">
@@ -312,8 +310,6 @@ const MovementsTable: React.FC<{}> = (): React.ReactElement => {
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
     </Paper>
-
-    
   );
 };
 
