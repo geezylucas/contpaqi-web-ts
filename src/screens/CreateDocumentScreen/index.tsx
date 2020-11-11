@@ -15,15 +15,14 @@ import Review from "./Review";
 const useStyles = makeStyles((theme: Theme) => ({
   layout: {
     width: "auto",
-    [theme.breakpoints.up(800 + theme.spacing(2) * 2)]: {
-      width: 800,
-      marginLeft: "auto",
-      marginRight: "auto",
+    [theme.breakpoints.up("md")]: {
+      marginLeft: theme.spacing(6),
+      marginRight: theme.spacing(6),
     },
   },
   paper: {
     padding: theme.spacing(2),
-    [theme.breakpoints.up(800 + theme.spacing(3) * 2)]: {
+    [theme.breakpoints.up("md")]: {
       padding: theme.spacing(3),
     },
   },
