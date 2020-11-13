@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -13,11 +14,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.up("md")]: {
       padding: theme.spacing(3),
     },
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column",
+  },
+  fixedHeight: {
+    height: 240,
   },
 }));
 
 const Documents: React.FC<{}> = (): React.ReactElement => {
   const classes = useStyles();
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
     <Container>
@@ -27,7 +35,7 @@ const Documents: React.FC<{}> = (): React.ReactElement => {
       <Grid container spacing={3}>
         {/* Chart */}
         <Grid item xs={12}>
-          <Paper className={classes.paper}>
+          <Paper className={fixedHeightPaper}>
             <Chart />
           </Paper>
         </Grid>
