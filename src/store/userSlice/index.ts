@@ -15,9 +15,14 @@ const userSlice = createSlice({
     setToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
     },
+    logout: (state) => {
+      // From here we can take action only at this "user" state
+      // But, as we have taken care of this particular "logout" action
+      // in rootReducer, we can use it to CLEAR the complete Redux Store's state
+    },
   },
 });
 
-export const { setToken } = userSlice.actions;
+export const { setToken, logout } = userSlice.actions;
 
 export default userSlice.reducer;

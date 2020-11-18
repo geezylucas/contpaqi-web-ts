@@ -49,7 +49,7 @@ const CreateClientScreen: React.FC<{}> = (): React.ReactElement => {
     typeClient: "",
   });
 
-  const currencies = useSelector(
+  const currencies: ValueLabelType[] = useSelector(
     (state: IApplicationState) => state.document.extra.currencies
   );
 

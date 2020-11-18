@@ -21,7 +21,7 @@ import Hidden from "@material-ui/core/Hidden";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
 import { Routes, RouteType } from "../routes";
-import { logOut } from "../../store/rootReducer";
+import { logout } from "../../store/userSlice";
 
 const drawerWidth = 240;
 
@@ -112,9 +112,9 @@ const NavBar: React.FC<Props> = (props: Props): React.ReactElement => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title} noWrap>
-            PROSIS - Contpaqi Web
+            PROSIS
           </Typography>
-          <Button color="inherit" onClick={() => dispatch(logOut)}>
+          <Button color="inherit" onClick={() => dispatch(logout())}>
             Cerrar sesión
           </Button>
         </Toolbar>
@@ -160,4 +160,4 @@ const NavBar: React.FC<Props> = (props: Props): React.ReactElement => {
   );
 };
 
-export default withRouter(React.memo(NavBar));
+export default withRouter(NavBar);

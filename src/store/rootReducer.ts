@@ -1,7 +1,6 @@
 import { AnyAction, combineReducers, Reducer } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, WebStorage } from "redux-persist";
-import { createAction } from "@reduxjs/toolkit";
 import documentReducer, { IDocumentState } from "./documentSlice";
 import userReducer, { IUserState } from "./userSlice";
 
@@ -18,17 +17,12 @@ const combinedReducers: Reducer<IApplicationState> = combineReducers<
   user: userReducer,
 });
 
-// LOGOUT Action
-const LOGOUT: string = "user/logout";
-
-export const logOut = createAction<undefined>(LOGOUT);
-
-// LOGOUT Reducer
-const rootReducer: Reducer<IApplicationState> = (
+const rootReducer = (
   state: IApplicationState | undefined,
   action: AnyAction
-): IApplicationState => {
+) => {
   if (action.type === "user/logout") {
+    // check for action type
     state = undefined;
   }
   return combinedReducers(state, action);
