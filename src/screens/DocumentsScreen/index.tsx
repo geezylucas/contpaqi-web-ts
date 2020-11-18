@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Documents: React.FC<{}> = (): React.ReactElement => {
+const DocumentsScreen: React.FC<{}> = (): React.ReactElement => {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -48,4 +48,4 @@ const Documents: React.FC<{}> = (): React.ReactElement => {
   );
 };
 
-export default Documents;
+export default DocumentsScreen;

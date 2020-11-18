@@ -1,7 +1,4 @@
-type ValueLabelType = {
-  value: number;
-  label: string;
-};
+import { ValueLabelType } from "../../types";
 
 type ProductServiceType = {
   codigo: string;

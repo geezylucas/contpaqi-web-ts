@@ -13,13 +13,6 @@ import MovementsTable from "./MovementsTable";
 import Review from "./Review";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  layout: {
-    width: "auto",
-    [theme.breakpoints.up("md")]: {
-      marginLeft: theme.spacing(6),
-      marginRight: theme.spacing(6),
-    },
-  },
   paper: {
     padding: theme.spacing(2),
     [theme.breakpoints.up("md")]: {
@@ -63,7 +56,7 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
   const handleBack = (): void => setActiveStep(activeStep - 1);
 
   return (
-    <Container className={classes.layout}>
+    <Container maxWidth="md">
       <Paper className={classes.paper}>
         <Typography component="h1" variant="h4" align="center">
           Crear factura
