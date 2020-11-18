@@ -21,7 +21,7 @@ const combinedReducers: Reducer<IApplicationState> = combineReducers<
 // LOGOUT Action
 const LOGOUT: string = "user/logout";
 
-export const logout = createAction<undefined>(LOGOUT);
+export const logOut = createAction<undefined>(LOGOUT);
 
 // LOGOUT Reducer
 const rootReducer: Reducer<IApplicationState> = (

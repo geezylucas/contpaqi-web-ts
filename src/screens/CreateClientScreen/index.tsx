@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import moment from "moment";
-import { makeStyles, Theme } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -11,23 +10,7 @@ import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import { ValueLabelType } from "../../types";
 import { IApplicationState } from "../../store/rootReducer";
-
-const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-    [theme.breakpoints.up("md")]: {
-      padding: theme.spacing(3),
-    },
-  },
-  buttons: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-  button: {
-    marginTop: theme.spacing(3),
-    marginLeft: theme.spacing(1),
-  },
-}));
+import { useStyles } from "../../App.css";
 
 const typeClient: ValueLabelType[] = [
   {
@@ -54,15 +37,7 @@ type FormType = {
   typeClient: string;
 };
 
-interface IStateProps {
-  currencies: ValueLabelType[];
-}
-
-type Props = IStateProps;
-
-const CreateClientScreen: React.FC<Props> = (
-  props: Props
-): React.ReactElement => {
+const CreateClientScreen: React.FC<{}> = (): React.ReactElement => {
   const classes = useStyles();
   const [form, setForm] = useState<FormType>({
     codeClient: "",
@@ -74,7 +49,9 @@ const CreateClientScreen: React.FC<Props> = (
     typeClient: "",
   });
 
-  const { currencies } = props;
+  const currencies = useSelector(
+    (state: IApplicationState) => state.document.extra.currencies
+  );
 
   const handleInputs = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.target;
@@ -209,11 +186,4 @@ const CreateClientScreen: React.FC<Props> = (
   );
 };
 
-const mapStateToProps = (state: IApplicationState): IStateProps => ({
-  currencies: state.document.extra.currencies,
-});
-
-export default connect<IStateProps, {}, {}, IApplicationState>(
-  mapStateToProps,
-  {}
-)(CreateClientScreen);
+export default CreateClientScreen;

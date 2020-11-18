@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import moment from "moment";
-import { makeStyles, Theme } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -19,23 +18,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { ValueLabelType } from "../../types";
-
-const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-    [theme.breakpoints.up("md")]: {
-      padding: theme.spacing(3),
-    },
-  },
-  buttons: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-  button: {
-    marginTop: theme.spacing(3),
-    marginLeft: theme.spacing(1),
-  },
-}));
+import { useStyles } from "../../App.css";
 
 const typeProduct: ValueLabelType[] = [
   {

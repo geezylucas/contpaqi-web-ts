@@ -11,24 +11,11 @@ import Hidden from "@material-ui/core/Hidden";
 import HeadForm from "./HeadForm";
 import MovementsTable from "./MovementsTable";
 import Review from "./Review";
+import { useStyles } from "../../App.css";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-    [theme.breakpoints.up("md")]: {
-      padding: theme.spacing(3),
-    },
-  },
+const useStylesCreateDocument = makeStyles((theme: Theme) => ({
   stepper: {
     padding: theme.spacing(3, 0, 5),
-  },
-  buttons: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-  button: {
-    marginTop: theme.spacing(3),
-    marginLeft: theme.spacing(1),
   },
 }));
 
@@ -49,6 +36,7 @@ function getStepContent(step: number): JSX.Element {
 
 const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
   const classes = useStyles();
+  const classesCreateDocument = useStylesCreateDocument();
   const [activeStep, setActiveStep] = React.useState<number>(0);
 
   const handleNext = (): void => setActiveStep(activeStep + 1);
@@ -64,23 +52,30 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
         <Hidden smUp implementation="css">
           <Stepper
             activeStep={activeStep}
-            className={classes.stepper}
+            className={classesCreateDocument.stepper}
             orientation="vertical"
           >
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
+            {steps.map(
+              (label: string): JSX.Element => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              )
+            )}
           </Stepper>
         </Hidden>
         <Hidden xsDown implementation="css">
-          <Stepper activeStep={activeStep} className={classes.stepper}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
+          <Stepper
+            activeStep={activeStep}
+            className={classesCreateDocument.stepper}
+          >
+            {steps.map(
+              (label: string): JSX.Element => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              )
+            )}
           </Stepper>
         </Hidden>
         <React.Fragment>

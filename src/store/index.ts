@@ -1,4 +1,9 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import {
+  Action,
+  configureStore,
+  getDefaultMiddleware,
+  ThunkAction,
+} from "@reduxjs/toolkit";
 import {
   FLUSH,
   REHYDRATE,
@@ -7,9 +12,9 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import rootReducer from "./rootReducer";
+import rootReducer, { IApplicationState } from "./rootReducer";
 
-export default configureStore({
+const store = configureStore({
   reducer: rootReducer,
   middleware: getDefaultMiddleware({
     serializableCheck: {
@@ -18,3 +23,13 @@ export default configureStore({
   }),
   devTools: process.env.NODE_ENV !== "development" ? false : true,
 });
+
+export type AppDispatch = typeof store.dispatch;
+export type AppThunk = ThunkAction<
+  void,
+  IApplicationState,
+  null,
+  Action<string>
+>;
+
+export default store;

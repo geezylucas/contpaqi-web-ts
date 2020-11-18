@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import {
   createStyles,
@@ -15,10 +16,12 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
 import { Routes, RouteType } from "../routes";
+import { logOut } from "../../store/rootReducer";
 
 const drawerWidth = 240;
 
@@ -49,13 +52,19 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: "auto",
       marginLeft: 0,
     },
+    title: {
+      flexGrow: 1,
+    },
   })
 );
 
-const NavBar: React.FC<RouteComponentProps> = (
-  props: RouteComponentProps
-): React.ReactElement => {
+interface IPropsOwn extends RouteComponentProps {}
+
+type Props = IPropsOwn;
+
+const NavBar: React.FC<Props> = (props: Props): React.ReactElement => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
   const { location } = props;
@@ -102,9 +111,12 @@ const NavBar: React.FC<RouteComponentProps> = (
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            PROSIS
+          <Typography variant="h6" className={classes.title} noWrap>
+            PROSIS - Contpaqi Web
           </Typography>
+          <Button color="inherit" onClick={() => dispatch(logOut)}>
+            Cerrar sesión
+          </Button>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer}>
@@ -148,4 +160,4 @@ const NavBar: React.FC<RouteComponentProps> = (
   );
 };
 
-export default withRouter(NavBar);
+export default withRouter(React.memo(NavBar));
