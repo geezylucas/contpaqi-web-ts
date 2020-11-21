@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import clsx from "clsx";
 import {
   createStyles,
@@ -18,59 +18,26 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
-
-type Data = {
-  calories: number;
-  carbs: number;
-  fat: number;
-  name: string;
-  protein: number;
-};
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-): Data {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows: Data[] = [
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Donut", 452, 25.0, 51, 4.9),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Honeycomb", 408, 3.2, 87, 6.5),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Jelly Bean", 375, 0.0, 94, 0.0),
-  createData("KitKat", 518, 26.0, 65, 7.0),
-  createData("Lollipop", 392, 0.2, 98, 0.0),
-  createData("Marshmallow", 318, 0, 81, 2.0),
-  createData("Nougat", 360, 19.0, 9, 37.0),
-  createData("Oreo", 437, 18.0, 63, 4.0),
-];
+import { MovementTableType } from "..";
+import AddMovementDialog from "./AddMovementDialog";
 
 type HeadCell = {
   disablePadding: boolean;
-  id: keyof Data;
+  id: keyof MovementTableType;
   label: string;
   numeric: boolean;
 };
 
 const headCells: HeadCell[] = [
-  {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Dessert (100g serving)",
-  },
-  { id: "calories", numeric: true, disablePadding: false, label: "Calories" },
-  { id: "fat", numeric: true, disablePadding: false, label: "Fat (g)" },
-  { id: "carbs", numeric: true, disablePadding: false, label: "Carbs (g)" },
-  { id: "protein", numeric: true, disablePadding: false, label: "Protein (g)" },
+  { id: "uuid", numeric: true, disablePadding: true, label: "#" },
+  { id: "code", numeric: true, disablePadding: false, label: "Código" },
+  { id: "name", numeric: false, disablePadding: true, label: "Nombre" },
+  { id: "amount", numeric: true, disablePadding: false, label: "Cantidad" },
+  { id: "unit", numeric: true, disablePadding: false, label: "Unidad" },
+  { id: "price", numeric: true, disablePadding: false, label: "Precio" },
+  { id: "tax", numeric: true, disablePadding: false, label: "IVA" },
+  { id: "subtotal", numeric: true, disablePadding: false, label: "Subtotal" },
+  { id: "total", numeric: true, disablePadding: false, label: "Total" },
 ];
 
 type EnhancedTableProps = {
@@ -133,13 +100,15 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
 
 type EnhancedTableToolbarProps = {
   numSelected: number;
+  handleOpen: () => void;
+  removeItems: () => void;
 };
 
 const EnhancedTableToolbar = (
   props: EnhancedTableToolbarProps
 ): JSX.Element => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
+  const { numSelected, handleOpen, removeItems } = props;
 
   return (
     <Toolbar
@@ -167,11 +136,13 @@ const EnhancedTableToolbar = (
         </Typography>
       )}
       {numSelected > 0 ? (
-        <Button variant="contained" color="secondary">
+        <Button variant="contained" color="secondary" onClick={removeItems}>
           Eliminar
         </Button>
       ) : (
-        <Button variant="contained">Agregar</Button>
+        <Button variant="contained" onClick={handleOpen}>
+          Agregar
+        </Button>
       )}
     </Toolbar>
   );
@@ -186,17 +157,25 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const MovementsTable: React.FC<{}> = (): React.ReactElement => {
+type Props = {
+  rows: MovementTableType[];
+  setRows: Dispatch<SetStateAction<MovementTableType[]>>;
+};
+
+const MovementsTable: React.FC<Props> = (props: Props): React.ReactElement => {
   const classes = useStyles();
-  const [selected, setSelected] = React.useState<string[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [selected, setSelected] = useState<string[]>([]);
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+
+  const { rows, setRows } = props;
 
   const handleSelectAllClick = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = rows.map((n: MovementTableType) => n.uuid);
       setSelected(newSelecteds);
       return;
     }
@@ -205,13 +184,13 @@ const MovementsTable: React.FC<{}> = (): React.ReactElement => {
 
   const handleClick = (
     event: React.MouseEvent<unknown>,
-    name: string
+    uuid: string
   ): void => {
-    const selectedIndex = selected.indexOf(name);
+    const selectedIndex = selected.indexOf(uuid);
     let newSelected: string[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, uuid);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -237,14 +216,31 @@ const MovementsTable: React.FC<{}> = (): React.ReactElement => {
     setPage(0);
   };
 
-  const isSelected = (name: string): boolean => selected.indexOf(name) !== -1;
+  const removeItems = (): void => {
+    let newRows = rows;
+
+    selected.forEach((element: string) => {
+      newRows = newRows.filter(
+        (item: MovementTableType) => item.uuid !== element
+      );
+    });
+
+    setSelected([]);
+    setRows(newRows);
+  };
+
+  const isSelected = (uuid: string): boolean => selected.indexOf(uuid) !== -1;
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <Paper className={classes.paper}>
-      <EnhancedTableToolbar numSelected={selected.length} />
+      <EnhancedTableToolbar
+        handleOpen={() => setOpenDialog(true)}
+        removeItems={removeItems}
+        numSelected={selected.length}
+      />
       <TableContainer>
         <Table aria-labelledby="tableTitle" aria-label="enhanced table">
           <EnhancedTableHead
@@ -256,18 +252,18 @@ const MovementsTable: React.FC<{}> = (): React.ReactElement => {
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map(
-                (row, index): JSX.Element => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                (row: MovementTableType, index: number): JSX.Element => {
+                  const isItemSelected = isSelected(row.uuid);
+                  const labelId = `enhanced-table-checkbox-${row.uuid}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.uuid)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.uuid}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -282,12 +278,16 @@ const MovementsTable: React.FC<{}> = (): React.ReactElement => {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {index + 1}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="right">{row.code}</TableCell>
+                      <TableCell align="right">{row.name}</TableCell>
+                      <TableCell align="right">{row.amount}</TableCell>
+                      <TableCell align="right">{row.unit}</TableCell>
+                      <TableCell align="right">{row.price}</TableCell>
+                      <TableCell align="right">{row.tax}</TableCell>
+                      <TableCell align="right">{row.subtotal}</TableCell>
+                      <TableCell align="right">{row.total}</TableCell>
                     </TableRow>
                   );
                 }
@@ -308,6 +308,11 @@ const MovementsTable: React.FC<{}> = (): React.ReactElement => {
         page={page}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+      <AddMovementDialog
+        open={openDialog}
+        setRows={setRows}
+        handleClose={() => setOpenDialog(false)}
       />
     </Paper>
   );

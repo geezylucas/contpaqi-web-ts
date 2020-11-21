@@ -1,5 +1,3 @@
-import { ValueLabelType } from "../../types";
-
 type ProductServiceType = {
   codigo: string;
   nombre: string;
@@ -13,10 +11,15 @@ type ClientProviderType = {
   moneda: number;
 };
 
-type ConceptType = {
+export type ConceptType = {
   codigoConcepto: number;
   nombreConcepto: string;
   noFolio: number;
+};
+
+export type ValueLabelType = {
+  value: number;
+  label: string;
 };
 
 export type HeadType = {

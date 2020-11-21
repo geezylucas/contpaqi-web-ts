@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import moment from "moment";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Stepper from "@material-ui/core/Stepper";
@@ -21,27 +22,70 @@ const useStylesCreateDocument = makeStyles((theme: Theme) => ({
 
 const steps: string[] = ["Encabezado", "Movimientos", "Revisar"];
 
-function getStepContent(step: number): JSX.Element {
-  switch (step) {
-    case 0:
-      return <HeadForm />;
-    case 1:
-      return <MovementsTable />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error("Unknown step");
-  }
-}
+export type HeaderType = {
+  date: string;
+  folio: number;
+  client: {
+    code: string;
+    businessName: string;
+    rfc: string;
+    currency: number;
+    nomCurrency: string;
+  };
+  exchangeRate: number;
+  concept: number;
+  nomConcept: string;
+};
+
+export type MovementTableType = {
+  uuid: string;
+  code: string;
+  name: string;
+  amount: number;
+  unit: number;
+  price: number;
+  tax: number;
+  subtotal: number;
+  total: number;
+  prices: number[];
+};
 
 const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
   const classes = useStyles();
   const classesCreateDocument = useStylesCreateDocument();
-  const [activeStep, setActiveStep] = React.useState<number>(0);
+  const [activeStep, setActiveStep] = useState<number>(0);
+  const [movements, setMovements] = useState<MovementTableType[]>([]);
+  const [header, setHeader] = useState<HeaderType>({
+    date: moment(Date.now()).format("YYYY-MM-DD"),
+    folio: 0,
+    client: {
+      code: "",
+      businessName: "",
+      rfc: "",
+      currency: 0,
+      nomCurrency: "",
+    },
+    exchangeRate: 1.0,
+    concept: 0,
+    nomConcept: "",
+  });
 
   const handleNext = (): void => setActiveStep(activeStep + 1);
 
   const handleBack = (): void => setActiveStep(activeStep - 1);
+
+  function getStepContent(step: number): JSX.Element {
+    switch (step) {
+      case 0:
+        return <HeadForm header={header} setHeader={setHeader} />;
+      case 1:
+        return <MovementsTable rows={movements} setRows={setMovements} />;
+      case 2:
+        return <Review />;
+      default:
+        throw new Error("Unknown step");
+    }
+  }
 
   return (
     <Container maxWidth="md">

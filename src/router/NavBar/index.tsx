@@ -160,4 +160,4 @@ const NavBar: React.FC<Props> = (props: Props): React.ReactElement => {
   );
 };
 
-export default withRouter(NavBar);
+export default withRouter(React.memo(NavBar));

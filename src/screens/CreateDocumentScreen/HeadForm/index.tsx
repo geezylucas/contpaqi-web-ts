@@ -1,20 +1,76 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
+import { useSelector } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import MenuItem from "@material-ui/core/MenuItem";
 import SearchIcon from "@material-ui/icons/Search";
+import { HeaderType } from "..";
+import {
+  ConceptType,
+  ValueLabelType,
+} from "../../../store/documentSlice/types";
+import { IApplicationState } from "../../../store/rootReducer";
 
-const HeadForm: React.FC<{}> = (): React.ReactElement => {
-  const SearchClient = (): JSX.Element => (
-    <Tooltip title="Buscar cliente">
-      <IconButton size="small">
-        <SearchIcon />
-      </IconButton>
-    </Tooltip>
+type Props = {
+  header: HeaderType;
+  setHeader: Dispatch<SetStateAction<HeaderType>>;
+};
+
+const SearchClient = (): JSX.Element => (
+  <Tooltip title="Buscar cliente">
+    <IconButton size="small">
+      <SearchIcon />
+    </IconButton>
+  </Tooltip>
+);
+
+const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
+  const { header, setHeader } = props;
+
+  const concepts: ConceptType[] = useSelector(
+    (state: IApplicationState) => state.document.extraAPI.conceptos
   );
+  const currencies: ValueLabelType[] = useSelector(
+    (state: IApplicationState) => state.document.extra.currencies
+  );
+
+  const handleConcepts = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const concept = concepts.find(
+      (e: ConceptType) => e.codigoConcepto === parseInt(event.target.value, 10)
+    );
+
+    setHeader({
+      ...header,
+      nomConcept: concept!.nombreConcepto,
+      concept: concept!.codigoConcepto,
+      folio: concept!.noFolio,
+    });
+  };
+
+  const handleCurrency = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const currency = currencies.find(
+      (o: ValueLabelType) => o.value === parseInt(event.target.value, 10)
+    );
+
+    setHeader({
+      ...header,
+      client: {
+        ...header.client,
+        currency: currency!.value,
+        nomCurrency: currency!.label,
+      },
+    });
+  };
+
+  const handleInputs = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setHeader({ ...header, [name]: value });
+  };
 
   return (
     <React.Fragment>
@@ -31,7 +87,20 @@ const HeadForm: React.FC<{}> = (): React.ReactElement => {
             label="Concepto"
             fullWidth
             helperText="Por favor selecciona un elemento"
-          ></TextField>
+            value={header.concept}
+            onChange={handleConcepts}
+          >
+            {concepts.map(
+              (option: ConceptType): JSX.Element => (
+                <MenuItem
+                  key={option.codigoConcepto}
+                  value={option.codigoConcepto}
+                >
+                  {option.nombreConcepto}
+                </MenuItem>
+              )
+            )}
+          </TextField>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField id="folio" name="folio" label="Folio" disabled fullWidth />
@@ -46,6 +115,8 @@ const HeadForm: React.FC<{}> = (): React.ReactElement => {
             InputLabelProps={{
               shrink: true,
             }}
+            value={header.date}
+            onChange={handleInputs}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -73,7 +144,17 @@ const HeadForm: React.FC<{}> = (): React.ReactElement => {
             label="Moneda"
             fullWidth
             helperText="Por favor selecciona un elemento"
-          ></TextField>
+            value={header.client.currency}
+            onChange={handleCurrency}
+          >
+            {currencies.map(
+              (option: ValueLabelType): JSX.Element => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              )
+            )}
+          </TextField>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -82,6 +163,8 @@ const HeadForm: React.FC<{}> = (): React.ReactElement => {
             label="Tipo de cambio"
             type="number"
             fullWidth
+            value={header.exchangeRate}
+            onChange={handleInputs}
           />
         </Grid>
       </Grid>
@@ -89,4 +172,4 @@ const HeadForm: React.FC<{}> = (): React.ReactElement => {
   );
 };
 
-export default HeadForm;
+export default React.memo(HeadForm);

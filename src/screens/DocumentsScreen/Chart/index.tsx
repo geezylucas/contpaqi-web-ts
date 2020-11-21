@@ -42,7 +42,7 @@ const Chart: React.FC<{}> = (): React.ReactElement => {
             top: 16,
             right: 16,
             bottom: 0,
-            left: 24,
+            left: 16,
           }}
         >
           <XAxis dataKey="time" stroke={theme.palette.text.secondary} />

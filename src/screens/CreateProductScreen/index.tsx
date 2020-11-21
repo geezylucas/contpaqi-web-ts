@@ -17,7 +17,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { ValueLabelType } from "../../types";
+import { ValueLabelType } from "../../store/documentSlice/types";
 import { useStyles } from "../../App.css";
 
 const typeProduct: ValueLabelType[] = [

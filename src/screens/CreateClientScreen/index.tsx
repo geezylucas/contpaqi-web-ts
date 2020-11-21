@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
-import { ValueLabelType } from "../../types";
+import { ValueLabelType } from "../../store/documentSlice/types";
 import { IApplicationState } from "../../store/rootReducer";
 import { useStyles } from "../../App.css";
 
