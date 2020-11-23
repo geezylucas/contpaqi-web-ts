@@ -25,11 +25,6 @@ const store = configureStore({
 });
 
 export type AppDispatch = typeof store.dispatch;
-export type AppThunk = ThunkAction<
-  Promise<void>,
-  IApplicationState,
-  null,
-  Action<string>
->;
+export type AppThunk = ThunkAction<void, IApplicationState, null, Action>;
 
 export default store;

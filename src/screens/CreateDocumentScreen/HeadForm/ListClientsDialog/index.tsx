@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
+import { useSelector } from "react-redux";
 import { useTheme } from "@material-ui/core/styles";
-import axios, { AxiosResponse } from "axios";
 import MaterialTable, { Column } from "material-table";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -10,26 +10,13 @@ import Button from "@material-ui/core/Button";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { TableIcons } from "../../../../components";
 import { HeaderType } from "../..";
+import { IApplicationState } from "../../../../store/rootReducer";
+import { ClientProviderType } from "../../../../store/documentSlice/types";
 
-type RowData = {
-  id: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-  avatar: string;
-};
-
-interface IResponse {
-  page: number;
-  per_page: number;
-  total: number;
-  total_pages: number;
-  data: RowData[];
-}
-
-const columns: Column<RowData>[] = [
-  { title: "First Name", field: "first_name", type: "string" },
-  { title: "Last Name", field: "last_name", type: "string" },
+const columns: Column<ClientProviderType>[] = [
+  { title: "Código", field: "codigo", type: "string" },
+  { title: "Razón social", field: "razonSocial", type: "string" },
+  { title: "RFC", field: "rfc", type: "string" },
 ];
 
 type Props = {
@@ -46,6 +33,14 @@ const ListClientsDialog: React.FC<Props> = (
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const clients: ClientProviderType[] = useSelector(
+    (state: IApplicationState) => state.document.extraAPI.clientesYProveedores
+  );
+
+  const rows: ClientProviderType[] = clients.map((o: ClientProviderType) => ({
+    ...o,
+  }));
+
   return (
     <Dialog
       open={open}
@@ -61,24 +56,9 @@ const ListClientsDialog: React.FC<Props> = (
           title="Lista de clientes"
           icons={TableIcons}
           columns={columns}
-          data={(query) =>
-            new Promise((resolve, reject) => {
-              let url = "https://reqres.in/api/users?";
-              url += "per_page=" + query.pageSize;
-              url += "&page=" + (query.page + 1);
-              axios
-                .get<IResponse>(url)
-                .then((response: AxiosResponse<IResponse>) => {
-                  resolve({
-                    data: response.data.data,
-                    page: response.data.page - 1,
-                    totalCount: response.data.total,
-                  });
-                });
-            })
-          }
+          data={rows}
           options={{ showFirstLastPageButtons: false }}
-          onRowClick={(event, rowData: RowData | undefined) => {
+          onRowClick={(event, rowData: ClientProviderType | undefined) => {
             console.log(rowData);
           }}
         />
@@ -92,4 +72,4 @@ const ListClientsDialog: React.FC<Props> = (
   );
 };
 
-export default ListClientsDialog;
+export default React.memo(ListClientsDialog);

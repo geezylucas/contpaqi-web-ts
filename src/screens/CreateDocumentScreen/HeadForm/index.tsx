@@ -34,20 +34,29 @@ const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
   );
 
   const handleConcepts = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const concept = concepts.find(
-      (e: ConceptType) => e.codigoConcepto === parseInt(event.target.value, 10)
+    const concept: ConceptType | undefined = concepts.find(
+      (o: ConceptType) => o.codigoConcepto === parseInt(event.target.value, 10)
     );
 
-    setHeader({
-      ...header,
-      nomConcept: concept!.nombreConcepto,
-      concept: concept!.codigoConcepto,
-      folio: concept!.noFolio,
-    });
+    if (concept) {
+      setHeader({
+        ...header,
+        nomConcept: concept!.nombreConcepto,
+        concept: concept!.codigoConcepto,
+        folio: concept!.noFolio,
+      });
+    } else {
+      setHeader({
+        ...header,
+        nomConcept: "",
+        concept: 0,
+        folio: 0,
+      });
+    }
   };
 
-  const handleCurrency = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const currency = currencies.find(
+  const handleCurrency = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const currency: ValueLabelType | undefined = currencies.find(
       (o: ValueLabelType) => o.value === parseInt(event.target.value, 10)
     );
 
@@ -61,7 +70,7 @@ const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
     });
   };
 
-  const handleInputs = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputs = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.target;
 
     setHeader({ ...header, [name]: value });
@@ -93,6 +102,7 @@ const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
             value={header.concept}
             onChange={handleConcepts}
           >
+            <MenuItem value={0}>Selecciona un concepto</MenuItem>
             {concepts.map(
               (option: ConceptType): JSX.Element => (
                 <MenuItem
@@ -106,7 +116,14 @@ const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
           </TextField>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField id="folio" name="folio" label="Folio" disabled fullWidth />
+          <TextField
+            id="folio"
+            name="folio"
+            label="Folio"
+            disabled
+            fullWidth
+            value={header.folio}
+          />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField

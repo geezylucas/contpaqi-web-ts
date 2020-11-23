@@ -16,4 +16,4 @@ const Copyright: React.FC<{}> = (): React.ReactElement => (
   </Box>
 );
 
-export default Copyright;
+export default React.memo(Copyright);

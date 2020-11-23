@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import moment from "moment";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -13,6 +14,7 @@ import HeadForm from "./HeadForm";
 import MovementsTable from "./MovementsTable";
 import Review from "./Review";
 import { useStyles } from "../../App.css";
+import { fetchFillView } from "../../store/documentSlice";
 
 const useStylesCreateDocument = makeStyles((theme: Theme) => ({
   stepper: {
@@ -53,6 +55,7 @@ export type MovementTableType = {
 const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
   const classes = useStyles();
   const classesCreateDocument = useStylesCreateDocument();
+  const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState<number>(0);
   const [movements, setMovements] = useState<MovementTableType[]>([]);
   const [header, setHeader] = useState<HeaderType>({
@@ -62,13 +65,17 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
       code: "",
       businessName: "",
       rfc: "",
-      currency: 0,
+      currency: 1,
       nomCurrency: "",
     },
     exchangeRate: 1.0,
     concept: 0,
     nomConcept: "",
   });
+
+  useEffect(() => {
+    dispatch(fetchFillView());
+  }, [dispatch]);
 
   const handleNext = (): void => setActiveStep(activeStep + 1);
 

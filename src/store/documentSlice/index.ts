@@ -56,9 +56,7 @@ const documentSlice = createSlice({
 
 export const { addHead, addMovements } = documentSlice.actions;
 
-export const fetchFillView = (): AppThunk => async (
-  dispatch: AppDispatch
-): Promise<void> => {
+export const fetchFillView = (): AppThunk => async (dispatch: AppDispatch) => {
   const response: AxiosResponse<ExtraAPIType> = await axios.get<ExtraAPIType>(
     "http://localhost:5007/api/Documento/FillView"
   );

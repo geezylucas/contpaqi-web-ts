@@ -1,10 +1,10 @@
-type ProductServiceType = {
+export type ProductServiceType = {
   codigo: string;
   nombre: string;
   precios: number[] | null;
 };
 
-type ClientProviderType = {
+export type ClientProviderType = {
   codigo: string;
   razonSocial: string;
   rfc: string;

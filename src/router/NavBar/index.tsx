@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import {
@@ -64,9 +64,9 @@ type Props = IPropsOwn;
 
 const NavBar: React.FC<Props> = (props: Props): React.ReactElement => {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
+  const dispatch = useDispatch();
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const { location } = props;
 
   const activeRoute = (routeName: string): boolean => {

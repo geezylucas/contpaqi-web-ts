@@ -1,4 +1,4 @@
-import { AnyAction, combineReducers, Reducer } from "@reduxjs/toolkit";
+import { Action, combineReducers, Reducer } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, WebStorage } from "redux-persist";
 import documentReducer, { IDocumentState } from "./documentSlice";
@@ -10,17 +10,17 @@ export interface IApplicationState {
   user: IUserState;
 }
 
-const combinedReducers: Reducer<IApplicationState> = combineReducers<
-  IApplicationState
->({
-  document: documentReducer,
-  user: userReducer,
-});
+const combinedReducers: Reducer<IApplicationState> = combineReducers<IApplicationState>(
+  {
+    document: documentReducer,
+    user: userReducer,
+  }
+);
 
 const rootReducer = (
   state: IApplicationState | undefined,
-  action: AnyAction
-) => {
+  action: Action
+): IApplicationState => {
   if (action.type === "user/logout") {
     // check for action type
     state = undefined;
