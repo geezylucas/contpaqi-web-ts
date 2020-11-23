@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { useSelector } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -14,21 +14,16 @@ import {
   ValueLabelType,
 } from "../../../store/documentSlice/types";
 import { IApplicationState } from "../../../store/rootReducer";
+import ListClientsDialog from "./ListClientsDialog";
 
 type Props = {
   header: HeaderType;
   setHeader: Dispatch<SetStateAction<HeaderType>>;
 };
 
-const SearchClient = (): JSX.Element => (
-  <Tooltip title="Buscar cliente">
-    <IconButton size="small">
-      <SearchIcon />
-    </IconButton>
-  </Tooltip>
-);
-
 const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+
   const { header, setHeader } = props;
 
   const concepts: ConceptType[] = useSelector(
@@ -71,6 +66,14 @@ const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
 
     setHeader({ ...header, [name]: value });
   };
+
+  const SearchClient = (): JSX.Element => (
+    <Tooltip title="Buscar cliente">
+      <IconButton size="small" onClick={() => setOpenDialog(true)}>
+        <SearchIcon />
+      </IconButton>
+    </Tooltip>
+  );
 
   return (
     <React.Fragment>
@@ -168,6 +171,12 @@ const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
           />
         </Grid>
       </Grid>
+      <ListClientsDialog
+        open={openDialog}
+        handleClose={() => setOpenDialog(false)}
+        setHeader={setHeader}
+        header={header}
+      />
     </React.Fragment>
   );
 };

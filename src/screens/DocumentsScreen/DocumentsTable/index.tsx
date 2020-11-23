@@ -39,7 +39,7 @@ const columns: Column<RowData>[] = [
 const DocumentsTable: React.FC<{}> = (): React.ReactElement => {
   return (
     <MaterialTable
-      title="        Lista de documentos"
+      title="Lista de documentos"
       icons={TableIcons}
       columns={columns}
       data={(query) =>

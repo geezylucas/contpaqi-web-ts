@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import SearchIcon from "@material-ui/icons/Search";
 import { MovementTableType } from "../..";
+import ListProductsDialog from "../ListProductsDialog";
 import { financial } from "../../../../utils";
 
 type Props = {
@@ -230,6 +231,12 @@ const AddMovementDialog: React.FC<Props> = (props: Props) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <ListProductsDialog
+        movement={movement}
+        setMovement={setMovement}
+        open={openDialog}
+        handleClose={() => setOpenDialog(false)}
+      />
     </React.Fragment>
   );
 };
