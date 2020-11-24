@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import { makeStyles, Theme } from "@material-ui/core/styles";
@@ -73,9 +73,21 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
     nomConcept: "",
   });
 
+  const isMountedRef = useRef<boolean>(true);
+
   useEffect(() => {
-    dispatch(fetchFillView());
+    if (isMountedRef.current) {
+      dispatch(fetchFillView());
+    }
   }, [dispatch]);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   const handleNext = (): void => setActiveStep(activeStep + 1);
 

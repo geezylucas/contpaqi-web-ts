@@ -11,7 +11,10 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { TableIcons } from "../../../../components";
 import { HeaderType } from "../..";
 import { IApplicationState } from "../../../../store/rootReducer";
-import { ClientProviderType } from "../../../../store/documentSlice/types";
+import {
+  ClientProviderType,
+  ValueLabelType,
+} from "../../../../store/documentSlice/types";
 
 const columns: Column<ClientProviderType>[] = [
   { title: "Código", field: "codigo", type: "string" },
@@ -29,12 +32,16 @@ type Props = {
 const ListClientsDialog: React.FC<Props> = (
   props: Props
 ): React.ReactElement => {
-  const { open, handleClose } = props;
+  const { open, handleClose, header, setHeader } = props;
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const clients: ClientProviderType[] = useSelector(
     (state: IApplicationState) => state.document.extraAPI.clientesYProveedores
+  );
+
+  const currencies: ValueLabelType[] = useSelector(
+    (state: IApplicationState) => state.document.extra.currencies
   );
 
   const rows: ClientProviderType[] = clients.map((o: ClientProviderType) => ({
@@ -59,7 +66,22 @@ const ListClientsDialog: React.FC<Props> = (
           data={rows}
           options={{ showFirstLastPageButtons: false }}
           onRowClick={(event, rowData: ClientProviderType | undefined) => {
-            console.log(rowData);
+            const currency: ValueLabelType | undefined = currencies.find(
+              (o) => o.value === rowData!.moneda
+            );
+
+            setHeader({
+              ...header,
+              client: {
+                code: rowData!.codigo,
+                businessName: rowData!.razonSocial,
+                rfc: rowData!.rfc,
+                currency: currency!.value,
+                nomCurrency: currency!.label,
+              },
+            });
+
+            handleClose();
           }}
         />
       </DialogContent>

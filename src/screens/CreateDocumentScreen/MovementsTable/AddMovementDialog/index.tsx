@@ -77,8 +77,11 @@ const AddMovementDialog: React.FC<Props> = (props: Props) => {
     });
   };
 
-  const addMovement = (): void => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+
     setRows((prevArray: MovementTableType[]) => [...prevArray, movement]);
+
     handleClose();
   };
 
@@ -98,138 +101,143 @@ const AddMovementDialog: React.FC<Props> = (props: Props) => {
         fullWidth={true}
         maxWidth="md"
       >
-        <DialogTitle id="form-dialog-title">Agregar movimiento</DialogTitle>
-        <DialogContent>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="product"
-                name="product"
-                label="Producto"
-                fullWidth
-                value={
-                  movement.code !== ""
-                    ? `${movement.code} ${movement.name}`
-                    : ""
-                }
-                InputProps={{ endAdornment: <SearchProduct /> }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="storage"
-                name="storage"
-                label="Almacen"
-                fullWidth
-                value={1}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="amount"
-                name="amount"
-                label="Cantidad"
-                type="number"
-                inputProps={{ min: "0", step: "1" }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                fullWidth
-                onChange={handleAmount}
-                value={movement.amount}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              {movement.prices.length > 0 ? (
+        <form onSubmit={handleSubmit}>
+          <DialogTitle id="form-dialog-title">Agregar movimiento</DialogTitle>
+          <DialogContent>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
-                  select
-                  id="price"
-                  name="price"
-                  label="Precio"
+                  id="product"
+                  name="product"
+                  label="Producto"
                   fullWidth
-                  value={movement.price}
-                  helperText="Por favor selecciona un elemento"
-                  onChange={handlePrice}
-                >
-                  {movement.prices.map(
-                    (e: number): JSX.Element => (
-                      <MenuItem key={e} value={e}>
-                        {e}
-                      </MenuItem>
-                    )
-                  )}
-                </TextField>
-              ) : (
+                  value={
+                    movement.code !== ""
+                      ? `${movement.code} ${movement.name}`
+                      : ""
+                  }
+                  InputProps={{ endAdornment: <SearchProduct /> }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
-                  id="price"
-                  name="price"
-                  label="Precio"
+                  id="storage"
+                  name="storage"
+                  label="Almacen"
+                  fullWidth
+                  value={1}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  id="amount"
+                  name="amount"
+                  label="Cantidad"
                   type="number"
-                  inputProps={{ min: "0", step: "0.01" }}
+                  inputProps={{ min: "0", step: "1" }}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   fullWidth
-                  value={movement.price}
-                  onChange={handlePrice}
+                  onChange={handleAmount}
+                  value={movement.amount}
                 />
-              )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                {movement.prices.length > 0 ? (
+                  <TextField
+                    required
+                    select
+                    id="price"
+                    name="price"
+                    label="Precio"
+                    fullWidth
+                    value={movement.price}
+                    helperText="Por favor selecciona un elemento"
+                    onChange={handlePrice}
+                  >
+                    <MenuItem value={0} disabled>
+                      Selecciona un precio
+                    </MenuItem>
+                    {movement.prices.map(
+                      (o: number): JSX.Element => (
+                        <MenuItem key={o} value={o}>
+                          {o}
+                        </MenuItem>
+                      )
+                    )}
+                  </TextField>
+                ) : (
+                  <TextField
+                    required
+                    id="price"
+                    name="price"
+                    label="Precio"
+                    type="number"
+                    inputProps={{ min: "0", step: "0.01" }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    fullWidth
+                    value={movement.price}
+                    onChange={handlePrice}
+                  />
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  disabled
+                  id="discount"
+                  name="discount"
+                  label="Descuento"
+                  fullWidth
+                  value="0"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  disabled
+                  id="tax"
+                  name="tax"
+                  label="I.V.A."
+                  fullWidth
+                  value={movement.tax}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  disabled
+                  id="subtotal"
+                  name="subtotal"
+                  label="Subtotal"
+                  fullWidth
+                  value={movement.subtotal}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  disabled
+                  id="total"
+                  name="total"
+                  label="Total"
+                  fullWidth
+                  value={movement.total}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                disabled
-                id="discount"
-                name="discount"
-                label="Descuento"
-                fullWidth
-                value="0"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                disabled
-                id="tax"
-                name="tax"
-                label="I.V.A."
-                fullWidth
-                value={movement.tax}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                disabled
-                id="subtotal"
-                name="subtotal"
-                label="Subtotal"
-                fullWidth
-                value={movement.subtotal}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                disabled
-                id="total"
-                name="total"
-                label="Total"
-                fullWidth
-                value={movement.total}
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={addMovement} color="primary">
-            Agregar
-          </Button>
-        </DialogActions>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancelar
+            </Button>
+            <Button type="submit" color="primary">
+              Agregar
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
       <ListProductsDialog
         movement={movement}

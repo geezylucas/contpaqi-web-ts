@@ -38,21 +38,12 @@ const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
       (o: ConceptType) => o.codigoConcepto === parseInt(event.target.value, 10)
     );
 
-    if (concept) {
-      setHeader({
-        ...header,
-        nomConcept: concept!.nombreConcepto,
-        concept: concept!.codigoConcepto,
-        folio: concept!.noFolio,
-      });
-    } else {
-      setHeader({
-        ...header,
-        nomConcept: "",
-        concept: 0,
-        folio: 0,
-      });
-    }
+    setHeader({
+      ...header,
+      nomConcept: concept!.nombreConcepto,
+      concept: concept!.codigoConcepto,
+      folio: concept!.noFolio,
+    });
   };
 
   const handleCurrency = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -102,7 +93,9 @@ const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
             value={header.concept}
             onChange={handleConcepts}
           >
-            <MenuItem value={0}>Selecciona un concepto</MenuItem>
+            <MenuItem value={0} disabled>
+              Selecciona un concepto
+            </MenuItem>
             {concepts.map(
               (option: ConceptType): JSX.Element => (
                 <MenuItem
@@ -146,6 +139,11 @@ const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
             name="client"
             label="Cliente"
             fullWidth
+            value={
+              header.client.code !== ""
+                ? `${header.client.code} ${header.client.businessName}`
+                : ""
+            }
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
