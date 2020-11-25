@@ -14,9 +14,13 @@ export const initialState: IDocumentState = {
   head: {
     numMoneda: 0,
     tipoCambio: 0,
-    codConcepto: "",
+    codConcepto: 0,
     codigoCteProv: "",
     fecha: "",
+    nomMoneda: "",
+    nomConcepto: "",
+    nomCteProv: "",
+    folio: 0,
   },
   movements: [],
   extra: {

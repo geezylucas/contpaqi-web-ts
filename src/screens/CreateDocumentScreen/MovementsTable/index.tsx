@@ -30,8 +30,8 @@ type HeadCell = {
 
 const headCells: HeadCell[] = [
   { id: "uuid", numeric: true, disablePadding: true, label: "#" },
-  { id: "code", numeric: true, disablePadding: false, label: "Código" },
-  { id: "name", numeric: false, disablePadding: true, label: "Nombre" },
+  { id: "code", numeric: false, disablePadding: false, label: "Código" },
+  { id: "name", numeric: false, disablePadding: false, label: "Nombre" },
   { id: "amount", numeric: true, disablePadding: false, label: "Cantidad" },
   { id: "unit", numeric: true, disablePadding: false, label: "Unidad" },
   { id: "price", numeric: true, disablePadding: false, label: "Precio" },
@@ -175,7 +175,9 @@ const MovementsTable: React.FC<Props> = (props: Props): React.ReactElement => {
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n: MovementTableType) => n.uuid);
+      const newSelecteds: string[] = rows.map(
+        (n: MovementTableType): string => n.uuid
+      );
       setSelected(newSelecteds);
       return;
     }
@@ -280,8 +282,8 @@ const MovementsTable: React.FC<Props> = (props: Props): React.ReactElement => {
                       >
                         {index + 1}
                       </TableCell>
-                      <TableCell align="right">{row.code}</TableCell>
-                      <TableCell align="right">{row.name}</TableCell>
+                      <TableCell>{row.code}</TableCell>
+                      <TableCell>{row.name}</TableCell>
                       <TableCell align="right">{row.amount}</TableCell>
                       <TableCell align="right">{row.unit}</TableCell>
                       <TableCell align="right">{row.price}</TableCell>

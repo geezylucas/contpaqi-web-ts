@@ -44,9 +44,11 @@ const ListClientsDialog: React.FC<Props> = (
     (state: IApplicationState) => state.document.extra.currencies
   );
 
-  const rows: ClientProviderType[] = clients.map((o: ClientProviderType) => ({
-    ...o,
-  }));
+  const rows: ClientProviderType[] = clients.map(
+    (o: ClientProviderType): ClientProviderType => ({
+      ...o,
+    })
+  );
 
   return (
     <Dialog

@@ -15,6 +15,8 @@ import MovementsTable from "./MovementsTable";
 import Review from "./Review";
 import { useStyles } from "../../App.css";
 import { fetchFillView } from "../../store/documentSlice";
+import { addHead, addMovements } from "../../store/documentSlice";
+import { MovementType } from "../../store/documentSlice/types";
 
 const useStylesCreateDocument = makeStyles((theme: Theme) => ({
   stepper: {
@@ -72,6 +74,8 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
     concept: 0,
     nomConcept: "",
   });
+  const [template, setTemplate] = useState<boolean>(false);
+  const [stamp, setStamp] = useState<boolean>(true);
 
   const isMountedRef = useRef<boolean>(true);
 
@@ -89,6 +93,43 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
     };
   }, []);
 
+  useEffect(() => {
+    switch (activeStep) {
+      case 1:
+        dispatch(
+          addHead({
+            numMoneda: header.client.currency,
+            nomMoneda: header.client.nomCurrency,
+            tipoCambio: header.exchangeRate,
+            codConcepto: header.concept,
+            nomConcepto: header.nomConcept,
+            codigoCteProv: header.client.code,
+            nomCteProv: header.client.businessName,
+            fecha: header.date,
+            folio: header.folio,
+          })
+        );
+        break;
+      case 2:
+        const summaryMovements: MovementType[] = movements.map(
+          (o: MovementTableType) => ({
+            codAlmacen: 1,
+            codProducto: o.code,
+            nomProducto: o.name,
+            precio: o.price,
+            cantidad: o.amount,
+            total: o.total,
+          })
+        );
+
+        dispatch(addMovements(summaryMovements));
+        break;
+      default:
+        break;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeStep]);
+
   const handleNext = (): void => setActiveStep(activeStep + 1);
 
   const handleBack = (): void => setActiveStep(activeStep - 1);
@@ -100,7 +141,14 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
       case 1:
         return <MovementsTable rows={movements} setRows={setMovements} />;
       case 2:
-        return <Review />;
+        return (
+          <Review
+            template={template}
+            setTemplate={setTemplate}
+            stamp={stamp}
+            setStamp={setStamp}
+          />
+        );
       default:
         throw new Error("Unknown step");
     }

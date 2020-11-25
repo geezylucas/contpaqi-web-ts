@@ -194,29 +194,34 @@ const CreateProductScreen: React.FC<{}> = (): React.ReactElement => {
                 />
               </form>
               <List>
-                {form.prices.map((value) => {
-                  const labelId = `checkbox-list-label-${value}`;
-                  return (
-                    <ListItem key={value} role={undefined} dense button>
-                      <ListItemText id={labelId} primary={`Precio: ${value}`} />
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          edge="end"
-                          aria-label="comments"
-                          onClick={() => {
-                            const newPrices = form.prices.filter(
-                              (elem) => elem !== value
-                            );
+                {form.prices.map(
+                  (value: number): JSX.Element => {
+                    const labelId = `checkbox-list-label-${value}`;
+                    return (
+                      <ListItem key={value} role={undefined} dense button>
+                        <ListItemText
+                          id={labelId}
+                          primary={`Precio: ${value}`}
+                        />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            aria-label="comments"
+                            onClick={() => {
+                              const newPrices = form.prices.filter(
+                                (elem) => elem !== value
+                              );
 
-                            setForm({ ...form, prices: newPrices });
-                          }}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  );
-                })}
+                              setForm({ ...form, prices: newPrices });
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    );
+                  }
+                )}
               </List>
             </Grid>
           </Grid>

@@ -25,16 +25,22 @@ export type ValueLabelType = {
 export type HeadType = {
   numMoneda: number;
   tipoCambio: number;
-  codConcepto: string;
+  codConcepto: number;
   codigoCteProv: string;
   fecha: string;
+  nomMoneda: string;
+  nomConcepto: string;
+  nomCteProv: string;
+  folio: number;
 };
 
 export type MovementType = {
-  codAlmacen: string;
+  codAlmacen: number;
   codProducto: string;
   precio: number;
-  unidades: number;
+  cantidad: number;
+  nomProducto: string;
+  total: number;
 };
 
 export type ExtraType = {

@@ -36,9 +36,11 @@ const ListProductsDialog: React.FC<Props> = (
     (state: IApplicationState) => state.document.extraAPI.productosYServicios
   );
 
-  const rows: ProductServiceType[] = products.map((o: ProductServiceType) => ({
-    ...o,
-  }));
+  const rows: ProductServiceType[] = products.map(
+    (o: ProductServiceType): ProductServiceType => ({
+      ...o,
+    })
+  );
 
   return (
     <Dialog
