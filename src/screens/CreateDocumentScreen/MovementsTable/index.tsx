@@ -18,15 +18,8 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
-import { MovementTableType } from "..";
+import { MovementTableType, HeadCell } from "../types";
 import AddMovementDialog from "./AddMovementDialog";
-
-type HeadCell = {
-  disablePadding: boolean;
-  id: keyof MovementTableType;
-  label: string;
-  numeric: boolean;
-};
 
 const headCells: HeadCell[] = [
   { id: "uuid", numeric: true, disablePadding: true, label: "#" },

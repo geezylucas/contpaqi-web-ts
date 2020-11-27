@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import MenuItem from "@material-ui/core/MenuItem";
 import SearchIcon from "@material-ui/icons/Search";
-import { HeaderType } from "..";
+import { HeaderType } from "../types";
 import {
   ConceptType,
   ValueLabelType,

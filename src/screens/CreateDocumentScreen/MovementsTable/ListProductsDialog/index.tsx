@@ -9,7 +9,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { TableIcons } from "../../../../components";
-import { MovementTableType } from "../..";
+import { MovementTableType } from "../../types";
 import { ProductServiceType } from "../../../../store/documentSlice/types";
 import { IApplicationState } from "../../../../store/rootReducer";
 

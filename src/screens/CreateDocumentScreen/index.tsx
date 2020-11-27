@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -10,13 +11,22 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Hidden from "@material-ui/core/Hidden";
+import Grid from "@material-ui/core/Grid";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import HeadForm from "./HeadForm";
 import MovementsTable from "./MovementsTable";
 import Review from "./Review";
 import { useStyles } from "../../App.css";
 import { fetchFillView } from "../../store/documentSlice";
 import { addHead, addMovements } from "../../store/documentSlice";
-import { MovementType } from "../../store/documentSlice/types";
+import { MovementType, HeadType } from "../../store/documentSlice/types";
+import { IApplicationState } from "../../store/rootReducer";
+import {
+  DataTypeSend,
+  HeaderType,
+  MovementTableType,
+  MovementTypeSend,
+} from "./types";
 
 const useStylesCreateDocument = makeStyles((theme: Theme) => ({
   stepper: {
@@ -25,34 +35,6 @@ const useStylesCreateDocument = makeStyles((theme: Theme) => ({
 }));
 
 const steps: string[] = ["Encabezado", "Movimientos", "Revisar"];
-
-export type HeaderType = {
-  date: string;
-  folio: number;
-  client: {
-    code: string;
-    businessName: string;
-    rfc: string;
-    currency: number;
-    nomCurrency: string;
-  };
-  exchangeRate: number;
-  concept: number;
-  nomConcept: string;
-};
-
-export type MovementTableType = {
-  uuid: string;
-  code: string;
-  name: string;
-  amount: number;
-  unit: number;
-  price: number;
-  tax: number;
-  subtotal: number;
-  total: number;
-  prices: number[];
-};
 
 const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
   const classes = useStyles();
@@ -74,10 +56,18 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
     concept: 0,
     nomConcept: "",
   });
+  const [sendingData, setSendingData] = useState<boolean>(true);
   const [template, setTemplate] = useState<boolean>(false);
   const [stamp, setStamp] = useState<boolean>(true);
 
   const isMountedRef = useRef<boolean>(true);
+
+  const headState: HeadType = useSelector(
+    (state: IApplicationState) => state.document.head
+  );
+  const movementsState: MovementType[] = useSelector(
+    (state: IApplicationState) => state.document.movements
+  );
 
   useEffect(() => {
     if (isMountedRef.current) {
@@ -94,6 +84,19 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
   }, []);
 
   useEffect(() => {
+    const sendDataAsync = async (data: DataTypeSend) => {
+      try {
+        await axios.post("http://localhost:5007/api/Documento/", data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setSendingData(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     switch (activeStep) {
       case 1:
         dispatch(
@@ -123,6 +126,35 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
         );
 
         dispatch(addMovements(summaryMovements));
+        break;
+      case 3:
+        const data: DataTypeSend = {
+          cabecera: {
+            numMoneda: headState.numMoneda,
+            serie: {
+              m_MaxCapacity: 2147483647,
+              Capacity: 16,
+              m_StringValue: "",
+              m_currentThread: 0,
+            },
+            tipoCambio: headState.tipoCambio,
+            codConcepto: headState.codConcepto,
+            codigoCteProv: headState.codigoCteProv,
+            fecha: moment(headState.fecha).format("MM/DD/YYYY"),
+          },
+          movimientos: movementsState.map(
+            (o: MovementType): MovementTypeSend => ({
+              codAlmacen: o.codAlmacen,
+              codProducto: o.codProducto,
+              precio: o.precio,
+              unidades: o.cantidad,
+            })
+          ),
+          guardarPlantilla: template,
+          timbrar: stamp,
+        };
+
+        sendDataAsync(data);
         break;
       default:
         break;
@@ -191,16 +223,26 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
         </Hidden>
         <React.Fragment>
           {activeStep === steps.length ? (
-            <React.Fragment>
-              <Typography variant="h5" gutterBottom>
-                Thank you for your order.
-              </Typography>
-              <Typography variant="subtitle1">
-                Your order number is #2001539. We have emailed your order
-                confirmation, and will send you an update when your order has
-                shipped.
-              </Typography>
-            </React.Fragment>
+            sendingData ? (
+              <Grid container justify="center">
+                <CircularProgress size={50} />
+              </Grid>
+            ) : (
+              <React.Fragment>
+                <Typography variant="h5" gutterBottom>
+                  Documento creado
+                </Typography>
+                <Typography variant="subtitle1">
+                  Documento creado y timbrado con éxito.
+                </Typography>
+                {template && (
+                  <Typography variant="subtitle1">
+                    Vaya a la pestaña de "Adminitrar facturas automáticas" para
+                    terminar de configurar su nueva plantilla.
+                  </Typography>
+                )}
+              </React.Fragment>
+            )
           ) : (
             <React.Fragment>
               {getStepContent(activeStep)}
