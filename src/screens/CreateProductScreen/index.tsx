@@ -163,7 +163,13 @@ const CreateProductScreen: React.FC<{}> = (): React.ReactElement => {
           </Grid>
         </Grid>
         <Box marginTop={4}>
-          <Grid container direction="row" justify="center" alignItems="center">
+          <Grid
+            container
+            spacing={3}
+            direction="row"
+            justify="center"
+            alignItems="center"
+          >
             <Grid item xs={12} sm={4}>
               <form
                 onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
