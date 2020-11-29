@@ -40,8 +40,8 @@ type FormType = {
   dateNow: string;
   rfc: string;
   curp: string;
-  currency: string;
-  typeClient: string;
+  currency: number;
+  typeClient: number;
 };
 
 const CreateClientScreen: React.FC<{}> = (): React.ReactElement => {
@@ -54,8 +54,8 @@ const CreateClientScreen: React.FC<{}> = (): React.ReactElement => {
     dateNow: moment(Date.now()).format("YYYY-MM-DD"),
     rfc: "",
     curp: "",
-    currency: "",
-    typeClient: "",
+    currency: 0,
+    typeClient: 0,
   });
 
   const handleClose = (): void => {
@@ -72,7 +72,9 @@ const CreateClientScreen: React.FC<{}> = (): React.ReactElement => {
     setForm({ ...form, [name]: value });
   };
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault();
     setLoading(true);
 
@@ -105,8 +107,8 @@ const CreateClientScreen: React.FC<{}> = (): React.ReactElement => {
           dateNow: moment(Date.now()).format("YYYY-MM-DD"),
           rfc: "",
           curp: "",
-          currency: "",
-          typeClient: "",
+          currency: 0,
+          typeClient: 0,
         });
       }
     } catch (error) {
@@ -199,6 +201,9 @@ const CreateClientScreen: React.FC<{}> = (): React.ReactElement => {
                   value={form.currency}
                   onChange={handleInputs}
                 >
+                  <MenuItem value={0} disabled>
+                    Selecciona una moneda
+                  </MenuItem>
                   {currencies.map(
                     (option: ValueLabelType): JSX.Element => (
                       <MenuItem key={option.value} value={option.value}>
@@ -220,6 +225,9 @@ const CreateClientScreen: React.FC<{}> = (): React.ReactElement => {
                   value={form.typeClient}
                   onChange={handleInputs}
                 >
+                  <MenuItem value={0} disabled>
+                    Selecciona un tipo de cliente
+                  </MenuItem>
                   {typeClient.map(
                     (option: ValueLabelType): JSX.Element => (
                       <MenuItem key={option.value} value={option.value}>

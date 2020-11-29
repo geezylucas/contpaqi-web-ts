@@ -52,7 +52,7 @@ const ListProductsDialog: React.FC<Props> = (
       fullScreen={fullScreen}
     >
       <DialogTitle id="form-dialog-title">Seleccione un producto</DialogTitle>
-      <DialogContent dividers>
+      <DialogContent>
         <MaterialTable
           title="Lista de productos"
           icons={TableIcons}

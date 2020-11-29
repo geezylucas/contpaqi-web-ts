@@ -60,7 +60,7 @@ const ListClientsDialog: React.FC<Props> = (
       fullScreen={fullScreen}
     >
       <DialogTitle id="form-dialog-title">Seleccione un cliente</DialogTitle>
-      <DialogContent dividers>
+      <DialogContent>
         <MaterialTable
           title="Lista de clientes"
           icons={TableIcons}

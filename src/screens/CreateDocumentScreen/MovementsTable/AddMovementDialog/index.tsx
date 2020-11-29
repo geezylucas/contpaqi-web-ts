@@ -85,7 +85,7 @@ const AddMovementDialog: React.FC<Props> = (props: Props) => {
     handleClose();
   };
 
-  const SearchProduct = (): JSX.Element => (
+  const SearchProduct: React.FC<{}> = (): JSX.Element => (
     <Tooltip title="Buscar producto o servicio">
       <IconButton onClick={() => setOpenDialog(true)} size="small">
         <SearchIcon />

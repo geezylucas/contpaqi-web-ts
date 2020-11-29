@@ -43,19 +43,11 @@ const typeProduct: ValueLabelType[] = [
   },
 ];
 
-const AddPrice = (): JSX.Element => (
-  <Tooltip title="Buscar cliente">
-    <IconButton type="submit">
-      <AddIcon />
-    </IconButton>
-  </Tooltip>
-);
-
 type FormType = {
   codeProduct: string;
   nameProduct: string;
   description: string;
-  typeProduct: string;
+  typeProduct: number;
   satKey: string;
   dateNow: string;
   prices: number[];
@@ -68,13 +60,21 @@ const CreateProductScreen: React.FC<{}> = (): React.ReactElement => {
     codeProduct: "",
     nameProduct: "",
     description: "",
-    typeProduct: "",
+    typeProduct: 0,
     satKey: "",
     dateNow: moment(Date.now()).format("YYYY-MM-DD"),
     prices: [],
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+
+  const AddPrice: React.FC<{}> = (): JSX.Element => (
+    <Tooltip title="Buscar cliente">
+      <IconButton onClick={addPrice}>
+        <AddIcon />
+      </IconButton>
+    </Tooltip>
+  );
 
   const handleClose = (): void => {
     setOpen(false);
@@ -86,11 +86,19 @@ const CreateProductScreen: React.FC<{}> = (): React.ReactElement => {
     setForm({ ...form, [name]: value });
   };
 
+  const addPrice = (): void => {
+    setForm({ ...form, prices: [...form.prices, price] });
+    setPrice(0);
+  };
+
   interface IDataSend {
     [key: string]: string | number[] | number;
   }
 
-  const onSubmit = async () => {
+  const onSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    event.preventDefault();
     setLoading(true);
 
     const data: IDataSend = {
@@ -126,7 +134,7 @@ const CreateProductScreen: React.FC<{}> = (): React.ReactElement => {
           codeProduct: "",
           nameProduct: "",
           description: "",
-          typeProduct: "",
+          typeProduct: 0,
           satKey: "",
           dateNow: moment(Date.now()).format("YYYY-MM-DD"),
           prices: [],
@@ -151,7 +159,7 @@ const CreateProductScreen: React.FC<{}> = (): React.ReactElement => {
             <CircularProgress size={50} />
           </Grid>
         ) : (
-          <React.Fragment>
+          <form onSubmit={onSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -201,6 +209,9 @@ const CreateProductScreen: React.FC<{}> = (): React.ReactElement => {
                   value={form.typeProduct}
                   onChange={handleInputs}
                 >
+                  <MenuItem value={0} disabled>
+                    Selecciona un tipo producto
+                  </MenuItem>
                   {typeProduct.map(
                     (option: ValueLabelType): JSX.Element => (
                       <MenuItem key={option.value} value={option.value}>
@@ -241,14 +252,8 @@ const CreateProductScreen: React.FC<{}> = (): React.ReactElement => {
                 justify="center"
                 alignItems="center"
               >
-                <Grid item xs={12} sm={4}>
-                  <form
-                    onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
-                      event.preventDefault();
-                      setForm({ ...form, prices: [...form.prices, price] });
-                      setPrice(0);
-                    }}
-                  >
+                <Grid xs={12} sm={4}>
+                  <React.Fragment>
                     <TextField
                       id="price"
                       name="price"
@@ -269,37 +274,37 @@ const CreateProductScreen: React.FC<{}> = (): React.ReactElement => {
                       }}
                       helperText="Por favor agregar un elemento si desea que el producto tenga precios por defecto"
                     />
-                  </form>
-                  <List>
-                    {form.prices.map(
-                      (value: number): JSX.Element => {
-                        const labelId = `checkbox-list-label-${value}`;
-                        return (
-                          <ListItem key={value} role={undefined} dense button>
-                            <ListItemText
-                              id={labelId}
-                              primary={`Precio: ${value}`}
-                            />
-                            <ListItemSecondaryAction>
-                              <IconButton
-                                edge="end"
-                                aria-label="comments"
-                                onClick={() => {
-                                  const newPrices = form.prices.filter(
-                                    (elem) => elem !== value
-                                  );
+                    <List>
+                      {form.prices.map(
+                        (value: number): JSX.Element => {
+                          const labelId = `checkbox-list-label-${value}`;
+                          return (
+                            <ListItem key={value} role={undefined} dense button>
+                              <ListItemText
+                                id={labelId}
+                                primary={`Precio: ${value}`}
+                              />
+                              <ListItemSecondaryAction>
+                                <IconButton
+                                  edge="end"
+                                  aria-label="comments"
+                                  onClick={() => {
+                                    const newPrices = form.prices.filter(
+                                      (elem) => elem !== value
+                                    );
 
-                                  setForm({ ...form, prices: newPrices });
-                                }}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </ListItemSecondaryAction>
-                          </ListItem>
-                        );
-                      }
-                    )}
-                  </List>
+                                    setForm({ ...form, prices: newPrices });
+                                  }}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </ListItemSecondaryAction>
+                            </ListItem>
+                          );
+                        }
+                      )}
+                    </List>
+                  </React.Fragment>
                 </Grid>
               </Grid>
             </Box>
@@ -307,13 +312,13 @@ const CreateProductScreen: React.FC<{}> = (): React.ReactElement => {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={onSubmit}
+                type="submit"
                 className={classes.button}
               >
                 Crear
               </Button>
             </div>
-          </React.Fragment>
+          </form>
         )}
       </Paper>
       <Dialog

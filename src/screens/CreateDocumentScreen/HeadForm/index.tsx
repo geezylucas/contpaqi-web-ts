@@ -67,7 +67,7 @@ const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
     setHeader({ ...header, [name]: value });
   };
 
-  const SearchClient = (): JSX.Element => (
+  const SearchClient: React.FC<{}> = (): JSX.Element => (
     <Tooltip title="Buscar cliente">
       <IconButton size="small" onClick={() => setOpenDialog(true)}>
         <SearchIcon />

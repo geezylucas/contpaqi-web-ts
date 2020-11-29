@@ -39,7 +39,9 @@ type EnhancedTableProps = {
   rowCount: number;
 };
 
-const EnhancedTableHead = (props: EnhancedTableProps): JSX.Element => {
+const EnhancedTableHead: React.FC<EnhancedTableProps> = (
+  props: EnhancedTableProps
+): JSX.Element => {
   const { onSelectAllClick, numSelected, rowCount } = props;
 
   return (
@@ -97,7 +99,7 @@ type EnhancedTableToolbarProps = {
   removeItems: () => void;
 };
 
-const EnhancedTableToolbar = (
+const EnhancedTableToolbar: React.FC<EnhancedTableToolbarProps> = (
   props: EnhancedTableToolbarProps
 ): JSX.Element => {
   const classes = useToolbarStyles();
