@@ -2,22 +2,22 @@ import React from "react";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import ClientsTable from "./ClientsTable";
+import ProductsTable from "./ProductsTable";
 
-const ClientsScreen: React.FC<{}> = (): React.ReactElement => {
+const ProductsScreen: React.FC<{}> = (): React.ReactElement => {
   return (
     <Container>
       <Typography variant="h4" component="h1" gutterBottom>
-        Clientes, clientes - proveedores y proveedores
+        Productos, paquetes y servicios
       </Typography>
       <Grid container spacing={3}>
-        {/* List clients */}
+        {/* List products */}
         <Grid item xs={12}>
-          <ClientsTable />
+          <ProductsTable />
         </Grid>
       </Grid>
     </Container>
   );
 };
 
-export default ClientsScreen;
+export default ProductsScreen;

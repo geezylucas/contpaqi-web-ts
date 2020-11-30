@@ -9,6 +9,7 @@ import {
   CreateProductScreen,
   CreateClientScreen,
   ClientsScreen,
+  ProductsScreen,
 } from "../screens";
 
 export type RouteType = {
@@ -46,6 +47,13 @@ export const Routes: RouteType[] = [
     sidebarName: "Crear producto",
     component: CreateProductScreen,
     icon: CreateIcon,
+    exact: false,
+  },
+  {
+    path: "/products",
+    sidebarName: "Listado de productos",
+    component: ProductsScreen,
+    icon: ListIcon,
     exact: false,
   },
   {

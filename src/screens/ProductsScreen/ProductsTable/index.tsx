@@ -5,19 +5,24 @@ import { TableIcons } from "../../../components";
 
 type RowData = {
   codigo: string;
-  razonSocial: string;
-  rfc: string;
-  idMoneda: number;
-  moneda: string;
-  tipoCliente: string;
+  nombre: string;
+  precios: null | number[];
+  claveSAT: string;
+  tipoProducto: string;
 };
 
 const columns: Column<RowData>[] = [
   { title: "Código", field: "codigo", type: "string" },
-  { title: "Razón social", field: "razonSocial", type: "string" },
-  { title: "RFC", field: "rfc", type: "string" },
-  { title: "Moneda", field: "moneda", type: "string" },
-  { title: "Tipo Cliente", field: "tipoCliente", type: "string" },
+  { title: "Nombre", field: "nombre", type: "string" },
+  {
+    title: "Precios",
+    field: "precios",
+    render: (rowData: RowData) =>
+      rowData.precios ? rowData.precios.join(" - ") : "Sin precios",
+    type: "currency",
+  },
+  { title: "Clave SAT", field: "claveSAT", type: "string" },
+  { title: "Tipo producto", field: "tipoProducto", type: "string" },
 ];
 
 interface IResponse {
@@ -26,7 +31,7 @@ interface IResponse {
   data: RowData[];
 }
 
-const ClientsTable: React.FC<{}> = (): React.ReactElement => {
+const ProductsTable: React.FC<{}> = (): React.ReactElement => {
   return (
     <MaterialTable
       title="Listado"
@@ -34,7 +39,7 @@ const ClientsTable: React.FC<{}> = (): React.ReactElement => {
       columns={columns}
       data={(query) =>
         new Promise((resolve, reject) => {
-          let url = "http://localhost:5007/api/Cliente/GetClientes?";
+          let url = "http://localhost:5007/api/Producto/GetProductos?";
           url += "PageNumber=" + (query.page + 1);
           url += "&Rows=" + query.pageSize;
           axios
@@ -57,4 +62,4 @@ const ClientsTable: React.FC<{}> = (): React.ReactElement => {
   );
 };
 
-export default ClientsTable;
+export default ProductsTable;
