@@ -43,7 +43,7 @@ const DocumentsTable: React.FC<{}> = (): React.ReactElement => {
   return (
     <React.Fragment>
       <MaterialTable
-        title="Lista de documentos"
+        title="Listado"
         icons={TableIcons}
         columns={columns}
         data={(query) =>

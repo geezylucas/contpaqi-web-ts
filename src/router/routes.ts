@@ -8,6 +8,9 @@ import {
   DocumentsScreen,
   CreateProductScreen,
   CreateClientScreen,
+  ClientsScreen,
+  ProductsScreen,
+  TemplatesScreen,
 } from "../screens";
 
 export type RouteType = {
@@ -48,10 +51,31 @@ export const Routes: RouteType[] = [
     exact: false,
   },
   {
+    path: "/products",
+    sidebarName: "Listado de productos",
+    component: ProductsScreen,
+    icon: ListIcon,
+    exact: false,
+  },
+  {
     path: "/createclient",
     sidebarName: "Crear cliente",
     component: CreateClientScreen,
     icon: CreateIcon,
+    exact: false,
+  },
+  {
+    path: "/clients",
+    sidebarName: "Listado de clientes",
+    component: ClientsScreen,
+    icon: ListIcon,
+    exact: false,
+  },
+  {
+    path: "/templates",
+    sidebarName: "Listado de plantillas",
+    component: TemplatesScreen,
+    icon: ListIcon,
     exact: false,
   },
 ];

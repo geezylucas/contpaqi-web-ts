@@ -4,6 +4,9 @@ import DocumentsScreen from "./DocumentsScreen";
 import CreateProductScreen from "./CreateProductScreen";
 import CreateClientScreen from "./CreateClientScreen";
 import SignInScreen from "./SignInScreen";
+import ClientsScreen from "./ClientsScreen";
+import ProductsScreen from "./ProductsScreen";
+import TemplatesScreen from "./TemplatesScreen";
 
 export {
   HomeScreen,
@@ -12,4 +15,7 @@ export {
   CreateProductScreen,
   CreateClientScreen,
   SignInScreen,
+  ClientsScreen,
+  ProductsScreen,
+  TemplatesScreen,
 };
