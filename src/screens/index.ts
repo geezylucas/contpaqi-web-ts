@@ -6,6 +6,7 @@ import CreateClientScreen from "./CreateClientScreen";
 import SignInScreen from "./SignInScreen";
 import ClientsScreen from "./ClientsScreen";
 import ProductsScreen from "./ProductsScreen";
+import TemplatesScreen from "./TemplatesScreen";
 
 export {
   HomeScreen,
@@ -16,4 +17,5 @@ export {
   SignInScreen,
   ClientsScreen,
   ProductsScreen,
+  TemplatesScreen,
 };
