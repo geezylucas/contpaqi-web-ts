@@ -18,7 +18,7 @@ const TemplatesScreen: React.FC<{}> = (): React.ReactElement => {
 
   return (
     <Container>
-      <Toolbar>
+      <Toolbar disableGutters>
         <Typography
           className={classes.title}
           variant="h4"
