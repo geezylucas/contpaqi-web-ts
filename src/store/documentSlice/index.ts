@@ -36,8 +36,6 @@ export const initialState: IDocumentState = {
     ],
   },
   extraAPI: {
-    productosYServicios: [],
-    clientesYProveedores: [],
     conceptos: [],
   },
 };

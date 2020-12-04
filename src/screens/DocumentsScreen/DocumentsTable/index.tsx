@@ -65,7 +65,7 @@ const DocumentsTable: React.FC<{}> = (): React.ReactElement => {
         actions={[
           {
             icon: () => <PictureAsPdfIcon />,
-            tooltip: "Save User",
+            tooltip: "Mostrar PDF",
             onClick: (event, rowData: RowData | RowData[]): void =>
               setOpenPDF({
                 id: Array.isArray(rowData) ? rowData[0].folio : rowData.folio,

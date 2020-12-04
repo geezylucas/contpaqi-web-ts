@@ -1,16 +1,3 @@
-export type ProductServiceType = {
-  codigo: string;
-  nombre: string;
-  precios: number[] | null;
-};
-
-export type ClientProviderType = {
-  codigo: string;
-  razonSocial: string;
-  rfc: string;
-  moneda: number;
-};
-
 export type ConceptType = {
   codigoConcepto: number;
   nombreConcepto: string;
@@ -48,7 +35,5 @@ export type ExtraType = {
 };
 
 export type ExtraAPIType = {
-  productosYServicios: ProductServiceType[];
-  clientesYProveedores: ClientProviderType[];
   conceptos: ConceptType[];
 };

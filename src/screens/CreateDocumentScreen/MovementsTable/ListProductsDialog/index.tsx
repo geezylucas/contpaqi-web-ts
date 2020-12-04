@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { useTheme } from "@material-ui/core/styles";
-import { useSelector } from "react-redux";
+import axios, { AxiosResponse } from "axios";
 import MaterialTable, { Column } from "material-table";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -10,13 +10,34 @@ import Button from "@material-ui/core/Button";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { TableIcons } from "../../../../components";
 import { MovementTableType } from "../../types";
-import { ProductServiceType } from "../../../../store/documentSlice/types";
-import { IApplicationState } from "../../../../store/rootReducer";
 
-const columns: Column<ProductServiceType>[] = [
+type RowData = {
+  codigo: string;
+  nombre: string;
+  precios: null | number[];
+  claveSAT: string;
+  tipoProducto: string;
+};
+
+const columns: Column<RowData>[] = [
   { title: "Código", field: "codigo", type: "string" },
   { title: "Nombre", field: "nombre", type: "string" },
+  {
+    title: "Precios",
+    field: "precios",
+    render: (rowData: RowData) =>
+      rowData.precios ? rowData.precios.join(" - ") : "Sin precios",
+    type: "currency",
+  },
+  { title: "Clave SAT", field: "claveSAT", type: "string" },
+  { title: "Tipo producto", field: "tipoProducto", type: "string" },
 ];
+
+interface IResponse {
+  page: number;
+  total: number;
+  data: RowData[];
+}
 
 type Props = {
   open: boolean;
@@ -32,16 +53,6 @@ const ListProductsDialog: React.FC<Props> = (
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const products: ProductServiceType[] = useSelector(
-    (state: IApplicationState) => state.document.extraAPI.productosYServicios
-  );
-
-  const rows: ProductServiceType[] = products.map(
-    (o: ProductServiceType): ProductServiceType => ({
-      ...o,
-    })
-  );
-
   return (
     <Dialog
       open={open}
@@ -54,12 +65,26 @@ const ListProductsDialog: React.FC<Props> = (
       <DialogTitle id="form-dialog-title">Seleccione un producto</DialogTitle>
       <DialogContent>
         <MaterialTable
-          title="Lista de productos"
+          title="Listado de productos"
           icons={TableIcons}
           columns={columns}
-          data={rows}
-          options={{ showFirstLastPageButtons: false }}
-          onRowClick={(event, rowData: ProductServiceType | undefined) => {
+          data={(query) =>
+            new Promise((resolve, reject) => {
+              let url = "http://localhost:5007/api/Producto/GetProductos?";
+              url += "PageNumber=" + (query.page + 1);
+              url += "&Rows=" + query.pageSize;
+              axios
+                .get<IResponse>(url)
+                .then((response: AxiosResponse<IResponse>) => {
+                  resolve({
+                    data: response.data.data,
+                    page: response.data.page - 1,
+                    totalCount: response.data.total,
+                  });
+                });
+            })
+          }
+          onRowClick={(event, rowData: RowData | undefined) => {
             setMovement({
               ...movement,
               code: rowData!.codigo,
@@ -69,6 +94,10 @@ const ListProductsDialog: React.FC<Props> = (
             });
 
             handleClose();
+          }}
+          options={{
+            showFirstLastPageButtons: false,
+            actionsColumnIndex: -1,
           }}
         />
       </DialogContent>

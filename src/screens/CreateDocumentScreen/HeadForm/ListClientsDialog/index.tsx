@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
+import axios, { AxiosResponse } from "axios";
 import { useSelector } from "react-redux";
 import { useTheme } from "@material-ui/core/styles";
 import MaterialTable, { Column } from "material-table";
@@ -11,16 +12,30 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { TableIcons } from "../../../../components";
 import { HeaderType } from "../../types";
 import { IApplicationState } from "../../../../store/rootReducer";
-import {
-  ClientProviderType,
-  ValueLabelType,
-} from "../../../../store/documentSlice/types";
+import { ValueLabelType } from "../../../../store/documentSlice/types";
 
-const columns: Column<ClientProviderType>[] = [
+type RowData = {
+  codigo: string;
+  razonSocial: string;
+  rfc: string;
+  idMoneda: number;
+  moneda: string;
+  tipoCliente: string;
+};
+
+const columns: Column<RowData>[] = [
   { title: "Código", field: "codigo", type: "string" },
   { title: "Razón social", field: "razonSocial", type: "string" },
   { title: "RFC", field: "rfc", type: "string" },
+  { title: "Moneda", field: "moneda", type: "string" },
+  { title: "Tipo Cliente", field: "tipoCliente", type: "string" },
 ];
+
+interface IResponse {
+  page: number;
+  total: number;
+  data: RowData[];
+}
 
 type Props = {
   open: boolean;
@@ -36,18 +51,8 @@ const ListClientsDialog: React.FC<Props> = (
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const clients: ClientProviderType[] = useSelector(
-    (state: IApplicationState) => state.document.extraAPI.clientesYProveedores
-  );
-
   const currencies: ValueLabelType[] = useSelector(
     (state: IApplicationState) => state.document.extra.currencies
-  );
-
-  const rows: ClientProviderType[] = clients.map(
-    (o: ClientProviderType): ClientProviderType => ({
-      ...o,
-    })
   );
 
   return (
@@ -62,14 +67,28 @@ const ListClientsDialog: React.FC<Props> = (
       <DialogTitle id="form-dialog-title">Seleccione un cliente</DialogTitle>
       <DialogContent>
         <MaterialTable
-          title="Lista de clientes"
+          title="Listado de clientes"
           icons={TableIcons}
           columns={columns}
-          data={rows}
-          options={{ showFirstLastPageButtons: false }}
-          onRowClick={(event, rowData: ClientProviderType | undefined) => {
+          data={(query) =>
+            new Promise((resolve, reject) => {
+              let url = "http://localhost:5007/api/Cliente/GetClientes?";
+              url += "PageNumber=" + (query.page + 1);
+              url += "&Rows=" + query.pageSize;
+              axios
+                .get<IResponse>(url)
+                .then((response: AxiosResponse<IResponse>) => {
+                  resolve({
+                    data: response.data.data,
+                    page: response.data.page - 1,
+                    totalCount: response.data.total,
+                  });
+                });
+            })
+          }
+          onRowClick={(event, rowData: RowData | undefined) => {
             const currency: ValueLabelType | undefined = currencies.find(
-              (o) => o.value === rowData!.moneda
+              (o: ValueLabelType) => o.value === rowData!.idMoneda
             );
 
             setHeader({
@@ -84,6 +103,10 @@ const ListClientsDialog: React.FC<Props> = (
             });
 
             handleClose();
+          }}
+          options={{
+            showFirstLastPageButtons: false,
+            actionsColumnIndex: -1,
           }}
         />
       </DialogContent>
