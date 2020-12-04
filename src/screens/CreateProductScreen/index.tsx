@@ -252,7 +252,7 @@ const CreateProductScreen: React.FC<{}> = (): React.ReactElement => {
                 justify="center"
                 alignItems="center"
               >
-                <Grid xs={12} sm={4}>
+                <Grid item xs={12} sm={4}>
                   <React.Fragment>
                     <TextField
                       id="price"

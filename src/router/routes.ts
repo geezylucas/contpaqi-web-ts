@@ -16,7 +16,7 @@ import {
 export type RouteType = {
   path: string;
   sidebarName: string;
-  component: React.FC;
+  component: any;
   exact: boolean;
   icon: React.ElementType;
 };

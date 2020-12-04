@@ -12,7 +12,7 @@ const ProductsScreen: React.FC<{}> = (): React.ReactElement => {
       </Typography>
       <Grid container spacing={3}>
         {/* List products */}
-        <Grid item xs={12}>
+        <Grid item xs>
           <ProductsTable />
         </Grid>
       </Grid>

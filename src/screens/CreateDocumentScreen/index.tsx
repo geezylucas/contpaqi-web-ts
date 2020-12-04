@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+import queryString from "querystring";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Stepper from "@material-ui/core/Stepper";
@@ -36,10 +38,17 @@ const useStylesCreateDocument = makeStyles((theme: Theme) => ({
 
 const steps: string[] = ["Encabezado", "Movimientos", "Revisar"];
 
-const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
+interface IProps extends RouteComponentProps {}
+
+const CreateDocumentScreen: React.FC<IProps> = (
+  props: IProps
+): React.ReactElement => {
   const classes = useStyles();
   const classesCreateDocument = useStylesCreateDocument();
   const dispatch = useDispatch();
+
+  const { location } = props;
+
   const [activeStep, setActiveStep] = useState<number>(0);
   const [movements, setMovements] = useState<MovementTableType[]>([]);
   const [header, setHeader] = useState<HeaderType>({
@@ -82,6 +91,20 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
       isMountedRef.current = false;
     };
   }, []);
+
+  useEffect(() => {
+    const queryParams = queryString.parse(location.search);
+
+    const keysQueryParams: number = Object.keys(queryParams).length;
+
+    if (keysQueryParams > 0) {
+      setTemplate(true);
+      setStamp(false);
+    } else {
+      setTemplate(false);
+      setStamp(true);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     const sendDataAsync = async (data: DataTypeSend) => {
@@ -271,4 +294,4 @@ const CreateDocumentScreen: React.FC<{}> = (): React.ReactElement => {
   );
 };
 
-export default CreateDocumentScreen;
+export default withRouter(CreateDocumentScreen);

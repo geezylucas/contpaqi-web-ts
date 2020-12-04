@@ -1,4 +1,5 @@
 import React from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -14,8 +15,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const TemplatesScreen: React.FC<{}> = (): React.ReactElement => {
+interface IProps extends RouteComponentProps {}
+
+const TemplatesScreen: React.FC<IProps> = (
+  props: IProps
+): React.ReactElement => {
   const classes = useStyles();
+
+  const { history } = props;
+
+  const pushCreateDocument = (): void => {
+    history.push("/createdocument?template=true");
+  };
 
   return (
     <Container>
@@ -29,14 +40,18 @@ const TemplatesScreen: React.FC<{}> = (): React.ReactElement => {
           >
             Plantillas
           </Typography>
-          <Button variant="contained" color="primary">
+          <Button
+            onClick={pushCreateDocument}
+            variant="contained"
+            color="primary"
+          >
             Crear plantilla
           </Button>
         </Toolbar>
       </Box>
       <Grid container spacing={3}>
         {/* List clients */}
-        <Grid item xs={12}>
+        <Grid item xs>
           <TemplatesTable />
         </Grid>
       </Grid>
@@ -44,4 +59,4 @@ const TemplatesScreen: React.FC<{}> = (): React.ReactElement => {
   );
 };
 
-export default TemplatesScreen;
+export default withRouter(TemplatesScreen);
