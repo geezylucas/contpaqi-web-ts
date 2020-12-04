@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
+import Box from "@material-ui/core/Box";
 import TemplatesTable from "./TemplatesTable";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -18,19 +19,21 @@ const TemplatesScreen: React.FC<{}> = (): React.ReactElement => {
 
   return (
     <Container>
-      <Toolbar disableGutters>
-        <Typography
-          className={classes.title}
-          variant="h4"
-          component="h1"
-          gutterBottom
-        >
-          Plantillas
-        </Typography>
-        <Button variant="contained" color="primary">
-          Crear plantilla
-        </Button>
-      </Toolbar>
+      <Box mb={2}>
+        <Toolbar disableGutters>
+          <Typography
+            className={classes.title}
+            variant="h4"
+            component="h1"
+            gutterBottom
+          >
+            Plantillas
+          </Typography>
+          <Button variant="contained" color="primary">
+            Crear plantilla
+          </Button>
+        </Toolbar>
+      </Box>
       <Grid container spacing={3}>
         {/* List clients */}
         <Grid item xs={12}>
