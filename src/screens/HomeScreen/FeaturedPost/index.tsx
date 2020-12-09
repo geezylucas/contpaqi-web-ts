@@ -25,9 +25,7 @@ type PropsTypes = {
   post: FeaturedPostType;
 };
 
-const FeaturedPost: React.FC<PropsTypes> = (
-  props: PropsTypes
-): React.ReactElement => {
+const FeaturedPost: React.FC<PropsTypes> = (props: PropsTypes): JSX.Element => {
   const classes = useStyles();
   const { post }: { post: FeaturedPostType } = props;
 

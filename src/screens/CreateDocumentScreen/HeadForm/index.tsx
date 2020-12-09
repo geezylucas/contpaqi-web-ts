@@ -21,13 +21,13 @@ type Props = {
   setHeader: Dispatch<SetStateAction<HeaderType>>;
 };
 
-const HeadForm: React.FC<Props> = (props: Props): React.ReactElement => {
+const HeadForm: React.FC<Props> = (props: Props): JSX.Element => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   const { header, setHeader } = props;
 
   const concepts: ConceptType[] = useSelector(
-    (state: IApplicationState) => state.document.extraAPI.conceptos
+    (state: IApplicationState) => state.document.conceptos
   );
   const currencies: ValueLabelType[] = useSelector(
     (state: IApplicationState) => state.document.extra.currencies

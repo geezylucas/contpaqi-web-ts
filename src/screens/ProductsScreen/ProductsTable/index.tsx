@@ -31,7 +31,7 @@ interface IResponse {
   data: RowData[];
 }
 
-const ProductsTable: React.FC<{}> = (): React.ReactElement => {
+const ProductsTable: React.FC<{}> = (): JSX.Element => {
   return (
     <MaterialTable
       title="Listado"

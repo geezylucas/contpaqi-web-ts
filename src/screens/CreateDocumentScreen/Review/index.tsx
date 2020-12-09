@@ -35,7 +35,7 @@ type Props = {
   setStamp: Dispatch<SetStateAction<boolean>>;
 };
 
-const Review: React.FC<Props> = (props: Props): React.ReactElement => {
+const Review: React.FC<Props> = (props: Props): JSX.Element => {
   const classes = useStyles();
   const { template, setTemplate, stamp, setStamp } = props;
 

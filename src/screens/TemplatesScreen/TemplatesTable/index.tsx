@@ -49,7 +49,7 @@ export type SettingsDialogType = {
   ClienteProveedor: string;
 };
 
-const TemplatesTable: React.FC<{}> = (): React.ReactElement => {
+const TemplatesTable: React.FC<{}> = (): JSX.Element => {
   const [openSettigns, setOpenSettings] = useState<SettingsDialogType>({
     open: false,
     Documentoid: 0,

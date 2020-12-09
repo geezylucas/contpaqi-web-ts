@@ -44,9 +44,7 @@ type Props = {
   setHeader: Dispatch<SetStateAction<HeaderType>>;
 };
 
-const ListClientsDialog: React.FC<Props> = (
-  props: Props
-): React.ReactElement => {
+const ListClientsDialog: React.FC<Props> = (props: Props): JSX.Element => {
   const { open, handleClose, header, setHeader } = props;
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));

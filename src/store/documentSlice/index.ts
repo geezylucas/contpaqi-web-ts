@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { AppDispatch, AppThunk } from "..";
-import { MovementType, HeadType, ExtraAPIType, ExtraType } from "./types";
+import { MovementType, HeadType, ExtraType, ConceptType } from "./types";
 
 export interface IDocumentState {
   head: HeadType;
   movements: MovementType[];
   extra: ExtraType;
-  extraAPI: ExtraAPIType;
+  conceptos: ConceptType[];
 }
 
 export const initialState: IDocumentState = {
@@ -35,9 +35,7 @@ export const initialState: IDocumentState = {
       },
     ],
   },
-  extraAPI: {
-    conceptos: [],
-  },
+  conceptos: [],
 };
 
 const documentSlice = createSlice({
@@ -50,21 +48,21 @@ const documentSlice = createSlice({
     addMovements: (state, action: PayloadAction<MovementType[]>) => {
       state.movements = action.payload;
     },
-    updateExtraAPI: (state, action: PayloadAction<ExtraAPIType>) => {
-      state.extraAPI = action.payload;
+    updateConceptos: (state, action: PayloadAction<ConceptType[]>) => {
+      state.conceptos = action.payload;
     },
   },
 });
 
 export const { addHead, addMovements } = documentSlice.actions;
 
-export const fetchFillView = (): AppThunk => async (dispatch: AppDispatch) => {
+export const fetchConceptos = (): AppThunk => async (dispatch: AppDispatch) => {
   try {
-    const response: AxiosResponse<ExtraAPIType> = await axios.get<ExtraAPIType>(
-      "http://localhost:5007/api/Documento/FillView"
-    );
+    const response: AxiosResponse<ConceptType[]> = await axios.get<
+      ConceptType[]
+    >("http://localhost:5007/api/Concepto/GetConcepto");
 
-    dispatch(documentSlice.actions.updateExtraAPI(response.data));
+    dispatch(documentSlice.actions.updateConceptos(response.data));
   } catch (error) {
     console.log(error);
   }

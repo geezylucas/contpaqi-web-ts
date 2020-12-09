@@ -33,7 +33,3 @@ export type MovementType = {
 export type ExtraType = {
   currencies: ValueLabelType[];
 };
-
-export type ExtraAPIType = {
-  conceptos: ConceptType[];
-};

@@ -26,7 +26,7 @@ interface IResponse {
   data: RowData[];
 }
 
-const ClientsTable: React.FC<{}> = (): React.ReactElement => {
+const ClientsTable: React.FC<{}> = (): JSX.Element => {
   return (
     <MaterialTable
       title="Listado"

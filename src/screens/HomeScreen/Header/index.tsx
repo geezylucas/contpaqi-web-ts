@@ -38,9 +38,7 @@ type PropsTypes = {
   post: PostType;
 };
 
-const Header: React.FC<PropsTypes> = (
-  props: PropsTypes
-): React.ReactElement => {
+const Header: React.FC<PropsTypes> = (props: PropsTypes): JSX.Element => {
   const classes = useStyles();
   const { post }: { post: PostType } = props;
 

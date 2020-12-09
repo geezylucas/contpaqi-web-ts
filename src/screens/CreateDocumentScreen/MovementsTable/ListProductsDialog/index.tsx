@@ -46,9 +46,7 @@ type Props = {
   setMovement: Dispatch<SetStateAction<MovementTableType>>;
 };
 
-const ListProductsDialog: React.FC<Props> = (
-  props: Props
-): React.ReactElement => {
+const ListProductsDialog: React.FC<Props> = (props: Props): JSX.Element => {
   const { open, handleClose, movement, setMovement } = props;
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));

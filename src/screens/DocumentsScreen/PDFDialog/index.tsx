@@ -17,7 +17,7 @@ type Props = {
   id: number;
 };
 
-const PDFDialog: React.FC<Props> = (props: Props): React.ReactElement => {
+const PDFDialog: React.FC<Props> = (props: Props): JSX.Element => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const { open, handleClose, id } = props;

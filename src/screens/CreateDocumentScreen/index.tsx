@@ -19,7 +19,7 @@ import HeadForm from "./HeadForm";
 import MovementsTable from "./MovementsTable";
 import Review from "./Review";
 import { useStyles } from "../../App.css";
-import { fetchFillView } from "../../store/documentSlice";
+import { fetchConceptos } from "../../store/documentSlice";
 import { addHead, addMovements } from "../../store/documentSlice";
 import { MovementType, HeadType } from "../../store/documentSlice/types";
 import { IApplicationState } from "../../store/rootReducer";
@@ -80,7 +80,7 @@ const CreateDocumentScreen: React.FC<IProps> = (
 
   useEffect(() => {
     if (isMountedRef.current) {
-      dispatch(fetchFillView());
+      dispatch(fetchConceptos());
     }
   }, [dispatch]);
 

@@ -27,7 +27,7 @@ const data = [
   createData("24:00", undefined),
 ];
 
-const Chart: React.FC<{}> = (): React.ReactElement => {
+const Chart: React.FC<{}> = (): JSX.Element => {
   const theme = useTheme();
 
   return (

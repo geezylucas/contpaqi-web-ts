@@ -37,7 +37,7 @@ interface IResponse {
   data: RowData[];
 }
 
-const DocumentsTable: React.FC<{}> = (): React.ReactElement => {
+const DocumentsTable: React.FC<{}> = (): JSX.Element => {
   const [openPDF, setOpenPDF] = useState<PdfType>({ open: false, id: 0 });
 
   return (

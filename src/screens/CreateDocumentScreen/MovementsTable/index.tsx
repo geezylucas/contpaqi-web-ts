@@ -157,7 +157,7 @@ type Props = {
   setRows: Dispatch<SetStateAction<MovementTableType[]>>;
 };
 
-const MovementsTable: React.FC<Props> = (props: Props): React.ReactElement => {
+const MovementsTable: React.FC<Props> = (props: Props): JSX.Element => {
   const classes = useStyles();
   const [selected, setSelected] = useState<string[]>([]);
   const [page, setPage] = useState<number>(0);
